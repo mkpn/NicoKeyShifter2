@@ -1,11 +1,12 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.google.gms.google.services)
-    alias(libs.plugins.google.firebase.crashlytics)
+    alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.hilt.android)
     alias(libs.plugins.ksp)
     kotlin("plugin.serialization")
+//    alias(libs.plugins.google.gms.google.services)
+//    alias(libs.plugins.google.firebase.crashlytics)
 }
 
 android {
@@ -65,4 +66,15 @@ dependencies {
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
+
+    // okhttp
+    implementation(libs.okhttp)
+    implementation(libs.okhttp.logging)
+
+    // retrofit
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.kotlin.serialization)
+
+    // kotlin serialization
+    implementation(libs.kotlinx.serialization.json)
 }
