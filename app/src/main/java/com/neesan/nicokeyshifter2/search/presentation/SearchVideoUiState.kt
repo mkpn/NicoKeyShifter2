@@ -4,7 +4,7 @@ import com.neesan.nicokeyshifter2.search.domain.VideoDomainModel
 
 /**
  * 検索画面のUI状態
- * 
+ *
  * @property isLoading 読み込み中かどうか
  * @property query 検索クエリ
  * @property videos 検索結果の動画リスト
@@ -30,16 +30,31 @@ data class SearchVideoUiState(
      */
     val isInitialState: Boolean
         get() = !isLoading && query.isEmpty() && videos.isEmpty() && errorMessage == null
-    
+
     /**
      * エラー状態かどうか
      */
     val isError: Boolean
         get() = errorMessage != null
-    
+
     /**
      * 検索成功状態かどうか (結果が0件の場合もtrueになる)
      */
     val isSuccess: Boolean
         get() = !isLoading && query.isNotEmpty() && errorMessage == null
+
+    companion object {
+        fun ofDefault() = SearchVideoUiState(
+            isLoading = false,
+            videos = listOf(
+                VideoDomainModel(
+                    id = "sm12345678",
+                    title = "サンプル動画タイトル",
+                    thumbnailUrl = "",
+                    viewCount = 12345
+                )
+            ),
+            errorMessage = null
+        )
+    }
 } 

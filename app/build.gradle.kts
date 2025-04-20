@@ -42,7 +42,7 @@ android {
     buildFeatures {
         compose = true
     }
-    
+
     // Robolectricのテストで必要なための設定
     testOptions {
         unitTests {
@@ -81,6 +81,10 @@ dependencies {
     // retrofit
     implementation(libs.retrofit)
     implementation(libs.retrofit.kotlin.serialization)
+
+    // coil
+    implementation(libs.coil)
+    implementation(libs.coil.compose)
 
     // kotlin serialization
     implementation(libs.kotlinx.serialization.json)
