@@ -84,13 +84,14 @@ dependencies {
 
     // kotlin serialization
     implementation(libs.kotlinx.serialization.json)
-    
-    // テスト用の依存関係
-    // HiltとRobolectricのテスト用依存関係
+
+    // Dagger Hilt テスト
     testImplementation(libs.hilt.android.testing)
-//    kspTest("com.google.dagger:hilt-android-compiler:2.48.1")
-    testImplementation("org.robolectric:robolectric:4.14.1")
-    
-    // コルーチンのテスト用
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
+    kspTest(libs.hilt.compiler)
+
+    // Robolectric
+    testImplementation(libs.robolectric)
+
+    // コルーチンテスト
+    testImplementation(libs.kotlinx.coroutines.test)
 }

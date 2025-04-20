@@ -38,7 +38,6 @@ class SearchRepository @Inject constructor(
         limit: Int
     ): Flow<List<VideoDomainModel>> {
         return flow {
-        println("デバッグ メッセージ: SearchRepository.searchVideos() called with query: $query, targets: $targets, sort: $sort, limit: $limit")
             val response = searchApi.search(
                 query = query,
                 targets = targets,
@@ -49,9 +48,7 @@ class SearchRepository @Inject constructor(
             if (response.isSuccessful) {
                 val videos = response.body()?.data ?: emptyList()
                 emit(videos.map { VideoMapper.toVideoDomainModel(it) })
-                println("デバッグ メッセージ: APIレスポンス成功: ${response.body()}")
             } else {
-                println("デバッグ メッセージ: APIレスポンスエラー: ${response.code()}")
                 throw SearchException.ApiError(response.code())
             }
         }.flowOn(coroutineDispatcher)

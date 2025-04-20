@@ -73,16 +73,13 @@ class FakeSearchApi(
         sort: String,
         limit: Int
     ): Response<SearchVideoResponse> {
-        println("デバッグ : FakeSearchApi shouldReturnError=$shouldReturnError, shouldThrowNetworkError=$shouldThrowNetworkError, mockResponseCode=$mockResponseCode")
         // ネットワークエラーの場合
         if (shouldThrowNetworkError) {
-            println("デバッグ : ネットワークエラーをスロー")
             throw IOException("模擬ネットワークエラー")
         }
 
         // APIエラーの場合
         if (shouldReturnError) {
-            println("デバッグ : APIエラーをスロー")
             return Response.error(
                 mockResponseCode,
                 "APIエラー".toResponseBody(null)
