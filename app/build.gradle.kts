@@ -20,7 +20,7 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "com.neesan.nicokeyshifter2.HiltTestRunner"
     }
 
     buildTypes {
@@ -41,6 +41,13 @@ android {
     }
     buildFeatures {
         compose = true
+    }
+    
+    // Robolectricのテストで必要なための設定
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+        }
     }
 }
 
@@ -77,4 +84,13 @@ dependencies {
 
     // kotlin serialization
     implementation(libs.kotlinx.serialization.json)
+    
+    // テスト用の依存関係
+    // HiltとRobolectricのテスト用依存関係
+    testImplementation(libs.hilt.android.testing)
+//    kspTest("com.google.dagger:hilt-android-compiler:2.48.1")
+    testImplementation("org.robolectric:robolectric:4.14.1")
+    
+    // コルーチンのテスト用
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
 }

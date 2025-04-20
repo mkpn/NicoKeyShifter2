@@ -3,7 +3,11 @@ package com.neesan.nicokeyshifter2.search.data.search
 import com.neesan.nicokeyshifter2.search.domain.exception.SearchException
 import com.neesan.nicokeyshifter2.search.domain.VideoMapper
 import com.neesan.nicokeyshifter2.search.domain.VideoDomainModel
-import java.io.IOException
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -12,9 +16,10 @@ import javax.inject.Singleton
  */
 @Singleton
 class SearchRepository @Inject constructor(
-    private val searchApi: SearchApi
+    private val searchApi: SearchApi,
+    private val coroutineDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) {
-    
+
     /**
      * キーワードで動画を検索する
      *
@@ -24,33 +29,31 @@ class SearchRepository @Inject constructor(
      * @param limit 取得件数
      * @return 検索結果の動画リスト
      * @throws SearchException.ApiError APIエラーが発生した場合
-     * @throws SearchException.NetworkError ネットワークエラーが発生した場合
      * @throws SearchException.UnexpectedError その他の予期せぬエラーが発生した場合
      */
-    suspend fun searchVideos(
+    fun searchVideos(
         query: String,
         targets: String,
         sort: String,
         limit: Int
-    ): List<VideoDomainModel> {
-        try {
+    ): Flow<List<VideoDomainModel>> {
+        return flow {
+        println("デバッグ メッセージ: SearchRepository.searchVideos() called with query: $query, targets: $targets, sort: $sort, limit: $limit")
             val response = searchApi.search(
                 query = query,
                 targets = targets,
                 sort = sort,
                 limit = limit
             )
-            
+
             if (response.isSuccessful) {
                 val videos = response.body()?.data ?: emptyList()
-                return videos.map { VideoMapper.toVideoDomainModel(it) }
+                emit(videos.map { VideoMapper.toVideoDomainModel(it) })
+                println("デバッグ メッセージ: APIレスポンス成功: ${response.body()}")
             } else {
+                println("デバッグ メッセージ: APIレスポンスエラー: ${response.code()}")
                 throw SearchException.ApiError(response.code())
             }
-        } catch (e: IOException) {
-            throw SearchException.NetworkError(e)
-        } catch (e: Exception) {
-            throw SearchException.UnexpectedError(e)
-        }
+        }.flowOn(coroutineDispatcher)
     }
 } 

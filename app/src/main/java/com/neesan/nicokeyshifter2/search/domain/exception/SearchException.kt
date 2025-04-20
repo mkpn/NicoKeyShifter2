@@ -11,12 +11,7 @@ sealed class SearchException(message: String, cause: Throwable? = null) : Except
      * @param statusCode HTTPステータスコード
      */
     class ApiError(val statusCode: Int) : SearchException("検索APIエラー: ステータスコード $statusCode")
-    
-    /**
-     * ネットワーク接続エラーの例外
-     */
-    class NetworkError(cause: Throwable) : SearchException("ネットワーク接続エラー", cause)
-    
+
     /**
      * 予期せぬエラーの例外
      */
