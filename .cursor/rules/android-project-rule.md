@@ -5,10 +5,35 @@
 DataレイヤーとDomainレイヤーにクラスを作成した際、対応するユニットテストは常に作成すること。
 テストケース名は日本語とする。
 
+## Presentationレイヤー
+Screen/Content, Section, Componentという３つのレベルでレイアウトを分割する方針とする
+つまり、Composeで実装されたXXScreen関数、XXContent関数、Section関数、Component関数の実装によりUIは構築される
+
+### Screen/Contentについて
+ScreenとContentは1画面全体に相当するComposable関数である
+ScreenではViewModelの初期化とuiStateの取り出し、Content関数の呼び出しのみを行う
+特に、ViewModelに依存したUIはPreviewが不可能になるため、ScreenでのみViewModelを参照するようにして、Contentより下の階層にViewModel依存を生むことは絶対に禁止にする必要があり、ViewModelへの依存分離はScreenの最も重要な責務の一つである
+state hoistingに則り、Content以下のレイヤーで起きたイベントは全てScreenに集約され、ScreenからViewModelの関数を呼び出すことでインタラクトと状態の更新を実現する
+Content関数で具体的なUI実装を行う
+
+### Componentについて
+最も小さなレベルのUIパーツになる
+テキスト、ボタン、ラベル、リストの１要素、といった大きさのものがこれに該当する
+上記四つ以外にも該当するものはある
+
+### Sectionについて
+Screen/Contentより一段小さな大きさのUIを構築する
+大きさの定義が難しいが、Componentが集まることで構築されるもので、アイテムのリストやトップバー、ボトムバー、Drawerメニューといったものが該当する
+
+### Preview関数について
+Composeで組んだ画面に対しては全てpreview関数を実装すること
+ただ、Screen関数についてはViewModelへの依存が発生してPreview不可能なので不要
+Preview関数の命名は接頭語にPreviewを付けて Preview{関数名} を基本とする
+
 ## Domainレイヤー
-domainレイヤーに設置するデータを表現するクラスは"DomainData"とする。
+domainレイヤーに設置するデータを表現するクラスの接尾語は"DomainData"とする。
 UseCaseが公開する関数はinvoke関数のみとする。その他privateメソッドは適宜作成しても良い。
-UseCaseの返却する結果はResultでラップせず例外をスローする。
+UseCaseの返却する結果はResultでラップしない。意図せぬ結果については例外をスローする。
 ただし、例外クラスをシナリオに合わせて作成して、それをスローする。
 
 ## Dataレイヤー
