@@ -1,13 +1,18 @@
 ## 命名
-配列を表現する変数名は複数形の名詞を極力使わないようにする。XXListのように、接尾語にListをつける。
+配列を表現する変数名は複数形の名詞を使わないようにする
+XXListのように、接尾語にListをつける
 
 ## UnitTest
-DataレイヤーとDomainレイヤーにクラスを作成した際、対応するユニットテストは常に作成すること。
-テストケース名は日本語とする。
+DataレイヤーとDomainレイヤーにクラスを作成した際、対応するユニットテストは常に作成すること
+テストケース名は日本語とする
 
 ## Presentationレイヤー
 Screen/Content, Section, Componentという３つのレベルでレイアウトを分割する方針とする
-つまり、Composeで実装されたXXScreen関数、XXContent関数、Section関数、Component関数の実装によりUIは構築される
+このレベルは記載順に高いものとなっており、低レベルのレイアウトは高レベルのレイアウトを呼び出せない
+Screen/Contentは最も大きいUI単位で、SectionとComponentを呼び出すことができる
+Sectionはその次に大きいUI単位で、Componentを呼び出すことができる
+Componentは最も小さいUI単位で他のComposable関数は呼び出せない。小さいUIをprivate関数で持つことがある
+上記を基本として、適宜JetpackComposeデフォルトのウィジェットや、自前の小さなprivate関数を組み合わせてUIを構築する
 
 ### Screen/Contentについて
 ScreenとContentは1画面全体に相当するComposable関数である
@@ -31,10 +36,10 @@ Composeで組んだ画面に対しては全てpreview関数を実装すること
 Preview関数の命名は接頭語にPreviewを付けて Preview{関数名} を基本とする
 
 ## Domainレイヤー
-domainレイヤーに設置するデータを表現するクラスの接尾語は"DomainData"とする。
-UseCaseが公開する関数はinvoke関数のみとする。その他privateメソッドは適宜作成しても良い。
-UseCaseの返却する結果はResultでラップしない。意図せぬ結果については例外をスローする。
-ただし、例外クラスをシナリオに合わせて作成して、それをスローする。
+domainレイヤーに設置するデータを表現するクラスの接尾語は"DomainData"とする
+UseCaseが公開する関数はinvoke関数のみとするその他privateメソッドは適宜作成しても良い
+UseCaseの返却する結果はResultでラップしない意図せぬ結果については例外をスローする
+ただし、例外クラスをシナリオに合わせて作成して、それをスローする
 
 ## Dataレイヤー
-Repositoryには基本インターフェースを用意しない。代わりに、ApiやDBに接続するDataStoreの差し替えでテスタビリティを確保する。
+Repositoryには基本インターフェースを用意しない代わりに、ApiやDBに接続するDataStoreの差し替えでテスタビリティを確保する
