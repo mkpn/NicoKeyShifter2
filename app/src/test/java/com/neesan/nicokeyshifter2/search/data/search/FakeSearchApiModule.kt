@@ -86,23 +86,6 @@ class FakeSearchApi(
             )
         }
 
-        // 正常系の場合: キーワードに基づいてフィルタリング
-        val filteredVideos = if (query.isNotEmpty()) {
-            mockVideos.filter { it.title.contains(query) }
-        } else {
-            mockVideos
-        }
-
-        // ソート処理（簡易実装）
-        val sortedVideos = when (sort) {
-            "-viewCounter" -> filteredVideos.sortedByDescending { it.viewCounter }
-            "viewCounter" -> filteredVideos.sortedBy { it.viewCounter }
-            else -> filteredVideos
-        }
-
-        // 件数制限
-        val limitedVideos = sortedVideos.take(limit)
-
-        return Response.success(SearchVideoResponse(limitedVideos))
+        return Response.success(SearchVideoResponse(mockVideos))
     }
 }

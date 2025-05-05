@@ -69,6 +69,7 @@ class SearchVideoViewModel @Inject constructor(
                     }
                 }
                 .catch { throwable ->
+                    throwable.printStackTrace()
                     // エラーメッセージを設定
                     val errorMessage = when (throwable) {
                         is SearchException.ApiError -> "APIエラーが発生しました (${throwable.statusCode})"
