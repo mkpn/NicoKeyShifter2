@@ -1,7 +1,7 @@
-package com.neesan.nicokeyshifter2.search.domain
+package com.neesan.nicokeyshifter2.domain.search
 
-import com.neesan.nicokeyshifter2.search.data.search.SearchRepository
-import com.neesan.nicokeyshifter2.search.domain.exception.SearchException
+import com.neesan.nicokeyshifter2.data.search.SearchRepository
+import com.neesan.nicokeyshifter2.domain.exception.SearchException
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

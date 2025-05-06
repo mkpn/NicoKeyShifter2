@@ -1,6 +1,6 @@
-package com.neesan.nicokeyshifter2.search.domain
+package com.neesan.nicokeyshifter2.domain.search
 
-import com.neesan.nicokeyshifter2.search.data.search.Video
+import com.neesan.nicokeyshifter2.data.search.Video
 
 /**
  * VideoからVideoDomainModelへのマッピングを行うクラス

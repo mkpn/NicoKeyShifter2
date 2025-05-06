@@ -1,8 +1,8 @@
-package com.neesan.nicokeyshifter2.search.data.search
+package com.neesan.nicokeyshifter2.data.search
 
-import com.neesan.nicokeyshifter2.search.domain.exception.SearchException
-import com.neesan.nicokeyshifter2.search.domain.VideoMapper
-import com.neesan.nicokeyshifter2.search.domain.VideoDomainModel
+import com.neesan.nicokeyshifter2.domain.exception.SearchException
+import com.neesan.nicokeyshifter2.domain.search.VideoMapper
+import com.neesan.nicokeyshifter2.domain.search.VideoDomainModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow

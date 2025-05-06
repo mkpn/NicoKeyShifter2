@@ -1,8 +1,9 @@
 package com.neesan.nicokeyshifter2.search.domain
 
 import com.neesan.nicokeyshifter2.search.data.search.FakeSearchApiModule
-import com.neesan.nicokeyshifter2.search.data.search.SearchApi
-import com.neesan.nicokeyshifter2.search.domain.exception.SearchException
+import com.neesan.nicokeyshifter2.data.search.SearchApi
+import com.neesan.nicokeyshifter2.domain.exception.SearchException
+import com.neesan.nicokeyshifter2.domain.search.SearchVideoUseCase
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.HiltTestApplication
