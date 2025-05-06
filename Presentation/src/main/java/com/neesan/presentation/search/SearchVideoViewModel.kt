@@ -1,4 +1,4 @@
-package com.neesan.nicokeyshifter2.presentation.search
+package com.neesan.presentation.search
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -92,4 +92,4 @@ class SearchVideoViewModel @Inject constructor(
     fun clearSearch() {
         _uiState.value = SearchVideoUiState()
     }
-}  
+}

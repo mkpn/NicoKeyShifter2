@@ -1,4 +1,4 @@
-package com.neesan.nicokeyshifter2.presentation.search
+package com.neesan.presentation.search
 
 import com.neesan.domain.search.VideoDomainModel
 
@@ -57,4 +57,4 @@ data class SearchVideoUiState(
             errorMessage = null
         )
     }
-}  
+}

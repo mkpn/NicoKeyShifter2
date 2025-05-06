@@ -1,4 +1,4 @@
-package com.neesan.nicokeyshifter2.presentation.search
+package com.neesan.presentation.search
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
