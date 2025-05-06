@@ -1,4 +1,4 @@
-package com.neesan.nicokeyshifter2.data
+package com.neesan.data
 
 import android.content.Context
 import android.webkit.WebView

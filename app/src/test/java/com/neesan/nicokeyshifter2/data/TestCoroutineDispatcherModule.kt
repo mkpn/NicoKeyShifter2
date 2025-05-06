@@ -1,5 +1,6 @@
 package com.neesan.nicokeyshifter2.data
 
+import com.neesan.data.CoroutineDispatcherModule
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.components.SingletonComponent
