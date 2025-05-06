@@ -3,6 +3,7 @@ package com.neesan.nicokeyshifter2.domain.search
 import com.neesan.core.exception.SearchException
 import com.neesan.data.search.SearchApi
 import com.neesan.nicokeyshifter2.data.search.FakeSearchApiModule
+import com.neesan.domain.search.SearchVideoUseCase
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.HiltTestApplication
@@ -66,4 +67,4 @@ class SearchVideoUseCaseTest {
             }
         }
     }
-} 
+}  

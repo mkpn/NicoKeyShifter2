@@ -1,4 +1,4 @@
-package com.neesan.nicokeyshifter2.domain.search
+package com.neesan.domain.search
 
 /**
  * 動画のドメインモデル

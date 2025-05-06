@@ -1,4 +1,4 @@
-package com.neesan.nicokeyshifter2.domain.search
+package com.neesan.domain.search
 
 import com.neesan.data.search.SearchRepository
 import kotlinx.coroutines.flow.Flow
