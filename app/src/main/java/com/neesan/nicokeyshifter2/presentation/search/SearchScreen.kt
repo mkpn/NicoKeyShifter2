@@ -1,4 +1,4 @@
-package com.neesan.nicokeyshifter2.search.presentation
+package com.neesan.nicokeyshifter2.presentation.search
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -42,7 +42,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
-import com.neesan.nicokeyshifter2.search.domain.VideoDomainModel
+import com.neesan.nicokeyshifter2.domain.search.VideoDomainModel
 
 /**
  * 検索画面

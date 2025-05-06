@@ -1,6 +1,6 @@
-package com.neesan.nicokeyshifter2.search.presentation
+package com.neesan.nicokeyshifter2.presentation.search
 
-import com.neesan.nicokeyshifter2.search.domain.VideoDomainModel
+import com.neesan.nicokeyshifter2.domain.search.VideoDomainModel
 
 /**
  * 検索画面のUI状態

@@ -1,4 +1,4 @@
-package com.neesan.nicokeyshifter2.search.domain.exception
+package com.neesan.nicokeyshifter2.domain.exception
 
 /**
  * 検索関連の例外の基底クラス

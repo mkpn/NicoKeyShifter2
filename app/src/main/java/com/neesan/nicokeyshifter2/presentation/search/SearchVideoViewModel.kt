@@ -1,9 +1,9 @@
-package com.neesan.nicokeyshifter2.search.presentation
+package com.neesan.nicokeyshifter2.presentation.search
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.neesan.nicokeyshifter2.search.domain.SearchVideoUseCase
-import com.neesan.nicokeyshifter2.search.domain.exception.SearchException
+import com.neesan.nicokeyshifter2.domain.search.SearchVideoUseCase
+import com.neesan.nicokeyshifter2.domain.exception.SearchException
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

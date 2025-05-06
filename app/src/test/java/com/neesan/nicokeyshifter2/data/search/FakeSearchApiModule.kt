@@ -1,4 +1,4 @@
-package com.neesan.nicokeyshifter2.search.data.search
+package com.neesan.nicokeyshifter2.data.search
 
 import dagger.Module
 import dagger.Provides
@@ -88,4 +88,4 @@ class FakeSearchApi(
 
         return Response.success(SearchVideoResponse(mockVideos))
     }
-}
+} 
