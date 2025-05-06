@@ -1,9 +1,9 @@
-package com.neesan.nicokeyshifter2.search.domain
+package com.neesan.nicokeyshifter2.domain.search
 
-import com.neesan.nicokeyshifter2.search.data.search.FakeSearchApiModule
+
 import com.neesan.nicokeyshifter2.data.search.SearchApi
 import com.neesan.nicokeyshifter2.domain.exception.SearchException
-import com.neesan.nicokeyshifter2.domain.search.SearchVideoUseCase
+import com.neesan.nicokeyshifter2.data.search.FakeSearchApiModule
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.HiltTestApplication
@@ -23,7 +23,7 @@ import javax.inject.Inject
 @HiltAndroidTest
 @RunWith(RobolectricTestRunner::class)
 @Config(application = HiltTestApplication::class)
-class SearchUseCaseTest {
+class SearchVideoUseCaseTest {
 
     @get:Rule
     var hiltRule = HiltAndroidRule(this)
