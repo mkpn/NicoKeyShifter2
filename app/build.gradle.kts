@@ -58,6 +58,8 @@ dependencies {
     testImplementation(projects.core)
     implementation(projects.domain)
     testImplementation(projects.domain)
+    implementation(projects.presentation)
+    testImplementation(projects.presentation)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
