@@ -1,7 +1,6 @@
-package com.neesan.nicokeyshifter2.domain.search
+package com.neesan.domain.search
 
 import com.neesan.data.search.Video
-
 
 /**
  * VideoからVideoDomainModelへのマッピングを行うクラス
@@ -21,4 +20,4 @@ object VideoMapper {
             thumbnailUrl = video.thumbnailUrl
         )
     }
-} 
+}

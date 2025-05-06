@@ -1,6 +1,6 @@
 package com.neesan.nicokeyshifter2.presentation.search
 
-import com.neesan.nicokeyshifter2.domain.search.VideoDomainModel
+import com.neesan.domain.search.VideoDomainModel
 
 /**
  * 検索画面のUI状態
@@ -57,4 +57,4 @@ data class SearchVideoUiState(
             errorMessage = null
         )
     }
-} 
+}  

@@ -42,7 +42,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
-import com.neesan.nicokeyshifter2.domain.search.VideoDomainModel
+import com.neesan.domain.search.VideoDomainModel
 
 /**
  * 検索画面
