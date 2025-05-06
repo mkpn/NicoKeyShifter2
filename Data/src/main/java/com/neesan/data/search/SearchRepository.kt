@@ -1,8 +1,6 @@
-package com.neesan.nicokeyshifter2.data.search
+package com.neesan.data.search
 
-import com.neesan.nicokeyshifter2.domain.exception.SearchException
-import com.neesan.nicokeyshifter2.domain.search.VideoMapper
-import com.neesan.nicokeyshifter2.domain.search.VideoDomainModel
+import com.neesan.core.exception.SearchException
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -36,7 +34,7 @@ class SearchRepository @Inject constructor(
         targets: String,
         sort: String,
         limit: Int
-    ): Flow<List<VideoDomainModel>> {
+    ): Flow<SearchVideoResponse> {
         return flow {
             val response = searchApi.search(
                 query = query,
@@ -46,8 +44,7 @@ class SearchRepository @Inject constructor(
             )
 
             if (response.isSuccessful) {
-                val videos = response.body()?.data ?: emptyList()
-                emit(videos.map { VideoMapper.toVideoDomainModel(it) })
+                emit(response.body()!!)
             } else {
                 throw SearchException.ApiError(response.code())
             }

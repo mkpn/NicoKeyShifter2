@@ -20,4 +20,7 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "NicoKeyShifter2"
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 include(":app")
+include(":Data")
+include(":Core")

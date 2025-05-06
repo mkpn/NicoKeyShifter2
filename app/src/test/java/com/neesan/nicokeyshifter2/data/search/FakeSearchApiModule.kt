@@ -1,5 +1,9 @@
 package com.neesan.nicokeyshifter2.data.search
 
+import com.neesan.data.search.SearchApi
+import com.neesan.data.search.SearchApiModule
+import com.neesan.data.search.SearchVideoResponse
+import com.neesan.data.search.Video
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.components.SingletonComponent

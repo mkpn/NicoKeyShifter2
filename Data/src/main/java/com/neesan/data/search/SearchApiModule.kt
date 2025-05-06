@@ -1,4 +1,4 @@
-package com.neesan.nicokeyshifter2.data.search
+package com.neesan.data.search
 
 import dagger.Module
 import dagger.Provides

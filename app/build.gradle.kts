@@ -52,6 +52,10 @@ android {
 }
 
 dependencies {
+    implementation(projects.data)
+    testImplementation(projects.data)
+    implementation(projects.core)
+    testImplementation(projects.core)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -74,14 +78,6 @@ dependencies {
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
 
-    // okhttp
-    implementation(libs.okhttp)
-    implementation(libs.okhttp.logging)
-
-    // retrofit
-    implementation(libs.retrofit)
-    implementation(libs.retrofit.kotlin.serialization)
-
     // coil
     implementation(libs.coil)
     implementation(libs.coil.compose)
@@ -98,4 +94,13 @@ dependencies {
 
     // コルーチンテスト
     testImplementation(libs.kotlinx.coroutines.test)
+
+    // okhttp テスト用
+    testImplementation(libs.okhttp)
+    testImplementation(libs.okhttp.logging)
+
+    // retrofit テスト用
+    testImplementation(libs.retrofit)
+    testImplementation(libs.retrofit.kotlin.serialization)
+
 }

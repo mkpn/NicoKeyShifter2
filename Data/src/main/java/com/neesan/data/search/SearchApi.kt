@@ -1,4 +1,4 @@
-package com.neesan.nicokeyshifter2.data.search
+package com.neesan.data.search
 
 import retrofit2.Response
 import retrofit2.http.GET

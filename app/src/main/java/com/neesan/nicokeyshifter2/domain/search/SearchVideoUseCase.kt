@@ -1,8 +1,8 @@
 package com.neesan.nicokeyshifter2.domain.search
 
-import com.neesan.nicokeyshifter2.data.search.SearchRepository
-import com.neesan.nicokeyshifter2.domain.exception.SearchException
+import com.neesan.data.search.SearchRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 /**
@@ -27,8 +27,14 @@ class SearchVideoUseCase @Inject constructor(
         sort: String = "-viewCounter",
         limit: Int = 100
     ): Flow<List<VideoDomainModel>> {
-        // リポジトリを呼び出して検索を実行
-        // リポジトリ層で発生した例外は呼び出し元に伝播するので、ここでは特別なエラーハンドリングは不要
-        return searchRepository.searchVideos(query, targets, sort, limit)
+        return flow {
+            searchRepository.searchVideos(query, targets, sort, limit).collect {
+                // 取得した動画リストをVideoMapperを使って変換
+                val videos = it.data.map { video ->
+                    VideoMapper.toVideoDomainModel(video)
+                }
+                emit(videos)
+            }
+        }
     }
 }
