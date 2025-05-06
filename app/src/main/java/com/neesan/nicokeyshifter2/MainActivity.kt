@@ -5,7 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import com.neesan.presentation.search.SearchScreen
-import com.neesan.nicokeyshifter2.ui.theme.NicoKeyShifter2Theme
+import com.neesan.presentation.search.theme.NicoKeyShifter2Theme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

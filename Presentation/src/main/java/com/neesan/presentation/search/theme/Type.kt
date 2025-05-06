@@ -1,4 +1,4 @@
-package com.neesan.nicokeyshifter2.ui.theme
+package com.neesan.presentation.search.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
