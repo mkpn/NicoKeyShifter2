@@ -8,4 +8,13 @@ data class VideoDomainModel(
     val title: String,
     val viewCount: Int,
     val thumbnailUrl: String
-) 
+) {
+    companion object {
+        fun ofDefault() = VideoDomainModel(
+            id = "sm12345678",
+            title = "サンプル動画タイトル",
+            viewCount = 12345,
+            thumbnailUrl = ""
+        )
+    }
+}
