@@ -1,4 +1,4 @@
-package com.neesan.presentation.search.theme
+package com.neesan.presentation.theme
 
 import android.app.Activity
 import android.os.Build

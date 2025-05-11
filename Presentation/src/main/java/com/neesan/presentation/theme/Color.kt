@@ -1,4 +1,4 @@
-package com.neesan.presentation.search.theme
+package com.neesan.presentation.theme
 
 import androidx.compose.ui.graphics.Color
 

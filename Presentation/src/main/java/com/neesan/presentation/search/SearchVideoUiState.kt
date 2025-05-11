@@ -47,12 +47,7 @@ data class SearchVideoUiState(
         fun ofDefault() = SearchVideoUiState(
             isLoading = false,
             videos = listOf(
-                VideoDomainModel(
-                    id = "sm12345678",
-                    title = "サンプル動画タイトル",
-                    thumbnailUrl = "",
-                    viewCount = 12345
-                )
+                VideoDomainModel.ofDefault()
             ),
             errorMessage = null
         )
