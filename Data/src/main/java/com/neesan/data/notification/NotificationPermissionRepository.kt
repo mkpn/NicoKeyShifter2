@@ -10,4 +10,7 @@ class NotificationPermissionRepository @Inject constructor(
         return notificationPermissionDao.hasNotificationPermission()
     }
 
+    fun updateNotificationPermissionRequested() {
+        notificationPermissionDao.setNotificationPermissionRequested()
+    }
 }
