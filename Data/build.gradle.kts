@@ -42,8 +42,6 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     testImplementation(libs.junit)
-    testImplementation(libs.robolectric)
-    testImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
@@ -73,6 +71,8 @@ dependencies {
     // optional - Test helpers
     testImplementation(libs.androidx.room.testing)
 
-    // use Hilt in tests
+    // テストで実装を差し替えるためのパッケージ
     testImplementation(libs.hilt.android.testing)
+    testImplementation(libs.androidx.junit)
+    testImplementation(libs.robolectric)
 }
