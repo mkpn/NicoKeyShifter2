@@ -53,6 +53,11 @@ dependencies {
 
     // kotlin coroutines
     implementation(libs.kotlinx.coroutines.test)
+
+    // テストで実装を差し替えるためのパッケージ
+    testImplementation(libs.hilt.android.testing)
+    testImplementation(libs.androidx.junit)
+    testImplementation(libs.robolectric)
     
     // mockito for testing
     testImplementation("org.mockito:mockito-core:5.10.0")

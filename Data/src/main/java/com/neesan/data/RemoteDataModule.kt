@@ -17,7 +17,7 @@ import kotlinx.serialization.json.Json
 
 @Module
 @InstallIn(SingletonComponent::class)
-object DataModule {
+object RemoteDataModule {
 
     @Singleton
     @Provides

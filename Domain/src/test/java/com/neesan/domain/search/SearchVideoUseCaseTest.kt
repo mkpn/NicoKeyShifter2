@@ -1,10 +1,8 @@
 package com.neesan.domain.search
 
-import com.neesan.core.exception.SearchException
 import com.neesan.data.search.SearchRepository
 import com.neesan.data.search.SearchVideoResponse
 import com.neesan.data.search.Video
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.runTest
@@ -14,6 +12,7 @@ import org.junit.Test
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 
+@Suppress("NonAsciiCharacters", "TestFunctionName")
 class SearchVideoUseCaseTest {
 
     private lateinit var searchRepository: SearchRepository
@@ -26,7 +25,7 @@ class SearchVideoUseCaseTest {
     }
 
     @Test
-    fun `検索結果が正常に取得できること`() = runTest {
+    fun 検索結果が正常に取得できること() = runTest {
         // モックデータ
         val mockVideos = listOf(
             Video(contentId = "1", title = "テスト動画1", viewCounter = 1000, thumbnailUrl = "url1"),

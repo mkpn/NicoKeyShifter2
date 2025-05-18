@@ -70,4 +70,9 @@ dependencies {
     implementation(libs.androidx.room.ktx)
     // optional - Test helpers
     testImplementation(libs.androidx.room.testing)
+
+    // テストで実装を差し替えるためのパッケージ
+    testImplementation(libs.hilt.android.testing)
+    testImplementation(libs.androidx.junit)
+    testImplementation(libs.robolectric)
 }
