@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "240009416458",
+    "project_id": "nicokeyshifterandroid",
+    "storage_bucket": "nicokeyshifterandroid.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:240009416458:android:359536e38dbfb684cb74f3",
+        "android_client_info": {
+          "package_name": "com.neesan.nicokeyshifter2"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBlfLx3eeHk9XPTW2CVF-qrCSQDAKYBEEA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
