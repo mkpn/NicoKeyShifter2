@@ -1,5 +1,9 @@
 package com.neesan.presentation.search
 
+import android.Manifest
+import android.os.Build
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -20,6 +24,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -43,7 +48,10 @@ fun SearchScreen(
     SearchContent(
         uiState = uiState,
         onSearch = viewModel::search,
-        onClearSearch = viewModel::clearSearch
+        onClearSearch = viewModel::clearSearch,
+        onNotificationRequestFinish = {
+            viewModel.updateNotificationPermissionRequested()
+        }
     )
 }
 
@@ -53,8 +61,23 @@ private fun SearchContent(
     uiState: SearchVideoUiState,
     onSearch: (String) -> Unit,
     onClearSearch: () -> Unit,
+    onNotificationRequestFinish: () -> Unit = {},
 ) {
     var searchQuery by remember { mutableStateOf("") }
+
+    val requestPermissionLauncher =
+        rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) {
+            // 権限ダイアログが閉じられた時
+            onNotificationRequestFinish()
+        }
+
+    LaunchedEffect(Unit) {
+        if (uiState.showNotificationPermissionDialog
+            && Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
+        ) {
+            requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+        }
+    }
 
     Scaffold(
         topBar = {
