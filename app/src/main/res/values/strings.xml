@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">NicoKeyShifter2</string>
+    <string name="default_notification_channel_id">nico_key_shifter_notification_channel</string>
 </resources>
