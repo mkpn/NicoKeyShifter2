@@ -42,6 +42,8 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     testImplementation(libs.junit)
+    testImplementation(libs.robolectric)
+    testImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
@@ -70,4 +72,7 @@ dependencies {
     implementation(libs.androidx.room.ktx)
     // optional - Test helpers
     testImplementation(libs.androidx.room.testing)
+
+    // use Hilt in tests
+    testImplementation(libs.hilt.android.testing)
 }
