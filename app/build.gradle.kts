@@ -106,4 +106,5 @@ dependencies {
     // firebase
     implementation(libs.firebase.crashlytics)
     implementation(libs.firebase.inappmessaging.display)
+    implementation(libs.firebase.messaging)
 }

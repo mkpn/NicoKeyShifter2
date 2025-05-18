@@ -12,6 +12,7 @@ firebase-crashlytics = "19.4.2"
 google-gms-google-services = "4.4.2"
 google-firebase-crashlytics = "3.0.3"
 firebase-inappmessaging-display = "21.0.2"
+firebase-messaging = "24.0.0"
 ksp = "2.1.0-1.0.29"
 hiltAndroid = "2.55"
 hiltNavigationCompose = "1.2.0"
@@ -52,6 +53,7 @@ hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hil
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroid" }
 firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics", version.ref = "firebase-crashlytics" }
 firebase-inappmessaging-display = { group = "com.google.firebase", name = "firebase-inappmessaging-display", version.ref = "firebase-inappmessaging-display" }
+firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging", version.ref = "firebase-messaging" }
 coil = { group = "io.coil-kt", name = "coil", version.ref = "coil" }
 coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
 robolectric = { group = "org.robolectric", name = "robolectric", version.ref = "robolectric" }
