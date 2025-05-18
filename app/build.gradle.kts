@@ -5,8 +5,8 @@ plugins {
     alias(libs.plugins.hilt.android)
     alias(libs.plugins.ksp)
     kotlin("plugin.serialization")
-//    alias(libs.plugins.google.gms.google.services)
-//    alias(libs.plugins.google.firebase.crashlytics)
+    alias(libs.plugins.google.gms.google.services)
+    alias(libs.plugins.google.firebase.crashlytics)
 }
 
 android {
@@ -103,4 +103,7 @@ dependencies {
     testImplementation(libs.retrofit)
     testImplementation(libs.retrofit.kotlin.serialization)
 
+    // firebase
+    implementation(libs.firebase.crashlytics)
+    implementation(libs.firebase.inappmessaging.display)
 }
