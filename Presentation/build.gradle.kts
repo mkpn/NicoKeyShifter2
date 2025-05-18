@@ -44,7 +44,6 @@ android {
 dependencies {
     implementation(projects.core)
     implementation(projects.domain)
-    implementation(projects.data)
     testImplementation(projects.core)
     testImplementation(projects.domain)
     testImplementation(projects.data)

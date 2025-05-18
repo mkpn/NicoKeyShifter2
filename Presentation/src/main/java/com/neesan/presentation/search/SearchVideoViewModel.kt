@@ -3,6 +3,8 @@ package com.neesan.presentation.search
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.neesan.core.exception.SearchException
+import com.neesan.domain.notification.CheckNotificationPermissionRequestedUseCase
+import com.neesan.domain.notification.UpdateNotificationPermissionRequestedUseCase
 import com.neesan.domain.search.SearchVideoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,6 +15,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 /**
@@ -20,12 +23,30 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class SearchVideoViewModel @Inject constructor(
-    private val searchVideoUseCase: SearchVideoUseCase
+    private val searchVideoUseCase: SearchVideoUseCase,
+    private val checkNotificationPermissionRequestedUseCase: CheckNotificationPermissionRequestedUseCase,
+    private val updateNotificationPermissionRequestedUseCase: UpdateNotificationPermissionRequestedUseCase
 ) : ViewModel() {
 
     // UI状態
     private val _uiState = MutableStateFlow(SearchVideoUiState())
     val uiState: StateFlow<SearchVideoUiState> = _uiState
+
+    init {
+        runBlocking {
+            // 通知の権限がリクエストされたかどうかを確認
+            val isNotificationPermissionRequested = checkNotificationPermissionRequestedUseCase.invoke()
+
+            // 過去に通知の権限がリクエストされていない場合、ダイアログを表示する
+            if(!isNotificationPermissionRequested) {
+                _uiState.update {
+                    it.copy(
+                        showNotificationPermissionDialog = true
+                    )
+                }
+            }
+        }
+    }
 
     /**
      * 検索を実行する
@@ -91,5 +112,20 @@ class SearchVideoViewModel @Inject constructor(
      */
     fun clearSearch() {
         _uiState.value = SearchVideoUiState()
+    }
+
+    /**
+     * 通知の権限をリクエスト済みの状態に更新する
+     * uiStateのダイアログ表示フラグもfalseにする
+     */
+    fun updateNotificationPermissionRequested() {
+        viewModelScope.launch {
+            updateNotificationPermissionRequestedUseCase.invoke()
+            _uiState.update { currentState ->
+                currentState.copy(
+                    showNotificationPermissionDialog = false
+                )
+            }
+        }
     }
 }

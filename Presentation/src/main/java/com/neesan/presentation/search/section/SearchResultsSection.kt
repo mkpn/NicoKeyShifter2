@@ -36,7 +36,7 @@ fun SearchResultsSection(uiState: SearchVideoUiState) {
             }
         }
         // 検索結果が空
-        uiState.isEmpty -> {
+        uiState.isSearchResultEmpty -> {
             Box(
                 modifier = Modifier
                     .fillMaxSize()

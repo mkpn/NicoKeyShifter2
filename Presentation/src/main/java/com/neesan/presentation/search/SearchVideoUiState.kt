@@ -9,7 +9,7 @@ import com.neesan.domain.search.VideoDomainModel
  * @property query 検索クエリ
  * @property videos 検索結果の動画リスト
  * @property errorMessage エラーメッセージ（エラーがない場合はnull）
- * @property isEmpty 検索結果が空かどうか (検索実行後に結果が0件の場合はtrue)
+ * @property isSearchResultEmpty 検索結果が空かどうか (検索実行後に結果が0件の場合はtrue)
  * @property isInitialState 初期状態かどうか（検索実行前）
  */
 data class SearchVideoUiState(
@@ -17,12 +17,13 @@ data class SearchVideoUiState(
     val query: String = "",
     val videos: List<VideoDomainModel> = emptyList(),
     val errorMessage: String? = null,
+    val showNotificationPermissionDialog: Boolean = false
 ) {
     /**
      * 検索結果が空かどうか
      * 検索実行後に結果が0件の場合はtrue
      */
-    val isEmpty: Boolean
+    val isSearchResultEmpty: Boolean
         get() = !isLoading && query.isNotEmpty() && videos.isEmpty() && errorMessage == null
 
     /**

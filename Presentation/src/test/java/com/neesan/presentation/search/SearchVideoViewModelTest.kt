@@ -1,6 +1,8 @@
 package com.neesan.presentation.search
 
 import com.neesan.core.exception.SearchException
+import com.neesan.domain.notification.CheckNotificationPermissionRequestedUseCase
+import com.neesan.domain.notification.UpdateNotificationPermissionRequestedUseCase
 import com.neesan.domain.search.SearchVideoUseCase
 import com.neesan.domain.search.VideoDomainModel
 import kotlinx.coroutines.Dispatchers
@@ -26,13 +28,21 @@ class SearchVideoViewModelTest {
 
     private val testDispatcher = StandardTestDispatcher()
     private lateinit var searchVideoUseCase: SearchVideoUseCase
+    private lateinit var checkNotificationPermissionRequestedUseCase: CheckNotificationPermissionRequestedUseCase
+    private lateinit var updateNotificationPermissionRequestedUseCase: UpdateNotificationPermissionRequestedUseCase
     private lateinit var viewModel: SearchVideoViewModel
 
     @Before
     fun setup() {
         Dispatchers.setMain(testDispatcher)
         searchVideoUseCase = mock()
-        viewModel = SearchVideoViewModel(searchVideoUseCase)
+        checkNotificationPermissionRequestedUseCase = mock()
+        updateNotificationPermissionRequestedUseCase = mock()
+        viewModel = SearchVideoViewModel(
+            searchVideoUseCase,
+            checkNotificationPermissionRequestedUseCase,
+            updateNotificationPermissionRequestedUseCase
+        )
     }
 
     @After
@@ -75,7 +85,7 @@ class SearchVideoViewModelTest {
         assertEquals(2, state.videos.size)
         assertNull(state.errorMessage)
         assertFalse(state.isInitialState)
-        assertFalse(state.isEmpty)
+        assertFalse(state.isSearchResultEmpty)
         assertTrue(state.isSuccess)
     }
 
@@ -96,7 +106,7 @@ class SearchVideoViewModelTest {
         assertTrue(state.videos.isEmpty())
         assertNull(state.errorMessage)
         assertFalse(state.isInitialState)
-        assertTrue(state.isEmpty)
+        assertTrue(state.isSearchResultEmpty)
         assertTrue(state.isSuccess)
     }
 
@@ -118,7 +128,7 @@ class SearchVideoViewModelTest {
         assertTrue(state.errorMessage?.contains("APIエラー") == true)
         assertTrue(state.errorMessage?.contains("404") == true)
         assertFalse(state.isInitialState)
-        assertFalse(state.isEmpty)
+        assertFalse(state.isSearchResultEmpty)
         assertTrue(state.isError)
     }
 
