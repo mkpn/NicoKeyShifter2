@@ -38,26 +38,37 @@ class NicoKeyShifterMessagingService : FirebaseMessagingService() {
         if (remoteMessage.data.isNotEmpty()) {
             Log.d(TAG, "Message data payload: ${remoteMessage.data}")
             
-            // 長時間実行タスクが必要な場合はWorkManagerを使用
-            // scheduleJob()
+            // データペイロードから通知を表示
+            val title = remoteMessage.data["title"]
+            val body = remoteMessage.data["body"]
+            val videoId = remoteMessage.data["videoId"]
+            
+            sendNotification(title, body, videoId)
         }
 
         // 通知ペイロードを処理
         remoteMessage.notification?.let {
             Log.d(TAG, "Message Notification Body: ${it.body}")
-            sendNotification(it.title, it.body)
+            sendNotification(it.title, it.body, null)
         }
     }
 
     /**
      * 通知を作成して表示します。
      */
-    private fun sendNotification(title: String?, messageBody: String?) {
-        val intent = Intent(this, MainActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+    private fun sendNotification(
+        title: String?,
+        messageBody: String?,
+        videoId: String?
+    ) {
+        val intent = Intent(this, MainActivity::class.java).apply {
+            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            videoId?.let { putExtra(EXTRA_VIDEO_ID, it) }
+        }
+
         val pendingIntent = PendingIntent.getActivity(
             this, 0, intent,
-            PendingIntent.FLAG_IMMUTABLE
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         )
 
         val channelId = getString(R.string.default_notification_channel_id)
@@ -87,5 +98,6 @@ class NicoKeyShifterMessagingService : FirebaseMessagingService() {
 
     companion object {
         private const val TAG = "NicoKeyShifterFCM"
+        const val EXTRA_VIDEO_ID = "extra_video_id"
     }
 }
