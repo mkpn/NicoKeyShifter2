@@ -9,7 +9,7 @@ import javax.inject.Inject
 class GetAllFavoriteVideosUseCase @Inject constructor(
     private val favoriteRepository: FavoriteRepository
 ) {
-    operator fun invoke(): Flow<List<FavoriteVideoDomainData>> {
+    fun invoke(): Flow<List<FavoriteVideoDomainData>> {
         return favoriteRepository.getAllFavoriteVideos()
             .map { entityList ->
                 entityList.map { it.toDomainData() }

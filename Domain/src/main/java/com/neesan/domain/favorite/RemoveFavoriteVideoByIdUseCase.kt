@@ -6,7 +6,7 @@ import javax.inject.Inject
 class RemoveFavoriteVideoByIdUseCase @Inject constructor(
     private val favoriteRepository: FavoriteRepository
 ) {
-    suspend operator fun invoke(videoId: String) {
+    suspend fun invoke(videoId: String) {
         favoriteRepository.removeFavoriteVideoById(videoId)
     }
 }

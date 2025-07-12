@@ -7,7 +7,7 @@ import javax.inject.Inject
 class AddFavoriteVideoUseCase @Inject constructor(
     private val favoriteRepository: FavoriteRepository
 ) {
-    suspend operator fun invoke(favoriteVideo: FavoriteVideoDomainData) {
+    suspend fun invoke(favoriteVideo: FavoriteVideoDomainData) {
         favoriteRepository.addFavoriteVideo(favoriteVideo.toEntity())
     }
 }

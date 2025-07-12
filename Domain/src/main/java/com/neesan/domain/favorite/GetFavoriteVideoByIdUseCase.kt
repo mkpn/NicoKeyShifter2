@@ -7,7 +7,7 @@ import javax.inject.Inject
 class GetFavoriteVideoByIdUseCase @Inject constructor(
     private val favoriteRepository: FavoriteRepository
 ) {
-    suspend operator fun invoke(videoId: String): FavoriteVideoDomainData? {
+    suspend fun invoke(videoId: String): FavoriteVideoDomainData? {
         return favoriteRepository.getFavoriteVideoById(videoId)?.toDomainData()
     }
 }

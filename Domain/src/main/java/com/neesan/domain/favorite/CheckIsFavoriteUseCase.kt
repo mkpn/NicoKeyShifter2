@@ -6,7 +6,7 @@ import javax.inject.Inject
 class CheckIsFavoriteUseCase @Inject constructor(
     private val favoriteRepository: FavoriteRepository
 ) {
-    suspend operator fun invoke(videoId: String): Boolean {
+    suspend fun invoke(videoId: String): Boolean {
         return favoriteRepository.isFavorite(videoId)
     }
 }

@@ -8,7 +8,6 @@
 
 # Presentationレイヤー
 - Screen/Content, Section, Componentという３つのレベルでレイアウトを分割する方針とする
-- このレベルは記載順に高いものとなっており、低レベルのレイアウトは高レベルのレイアウトを呼び出せない
 - Screen/Contentは最も大きいUI単位で、SectionとComponentを呼び出すことができる
 - Sectionはその次に大きいUI単位で、Componentを呼び出すことができる
 - Componentは最も小さいUI単位で他のComposable関数は呼び出せない。小さいUIをprivate関数で持つことがある
@@ -38,6 +37,7 @@
 # Domainレイヤー
 - domainレイヤーに設置するデータを表現するクラスの接尾語は"DomainData"とする
 - UseCaseが公開する関数はinvoke関数のみとする。その他privateメソッドは適宜作成しても良い
+- invokeをoperatorとして定義することは、コードリーディングの効率低下防止のため禁止します
 - UseCaseの返却する結果はResultでラップしない。意図せぬ結果については例外をスローする
 - この時、例外クラスはシナリオに合わせて作成する
 
