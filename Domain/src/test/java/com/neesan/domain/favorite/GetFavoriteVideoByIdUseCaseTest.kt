@@ -2,6 +2,8 @@ package com.neesan.domain.favorite
 
 import com.neesan.data.favorite.FavoriteRepository
 import com.neesan.data.favorite.FavoriteVideoEntity
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
@@ -34,10 +36,10 @@ class GetFavoriteVideoByIdUseCaseTest {
         
         // モックの振る舞いを設定
         whenever(favoriteRepository.getFavoriteVideoById("sm12345"))
-            .thenReturn(mockEntity)
+            .thenReturn(flow { emit(mockEntity) })
 
         // テスト実行
-        val result = getFavoriteVideoByIdUseCase.invoke("sm12345")
+        val result = getFavoriteVideoByIdUseCase.invoke("sm12345").first()
 
         // 検証
         assertEquals("sm12345", result?.videoId)
@@ -50,10 +52,10 @@ class GetFavoriteVideoByIdUseCaseTest {
     fun 存在しないIDの場合nullが返ること() = runTest {
         // モックの振る舞いを設定
         whenever(favoriteRepository.getFavoriteVideoById("not_exist"))
-            .thenReturn(null)
+            .thenReturn(flow { emit(null) })
 
         // テスト実行
-        val result = getFavoriteVideoByIdUseCase.invoke("not_exist")
+        val result = getFavoriteVideoByIdUseCase.invoke("not_exist").first()
 
         // 検証
         assertNull(result)

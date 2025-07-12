@@ -1,6 +1,8 @@
 package com.neesan.domain.favorite
 
 import com.neesan.data.favorite.FavoriteRepository
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -25,10 +27,10 @@ class CheckIsFavoriteUseCaseTest {
     fun お気に入りに登録済みの動画の場合trueが返ること() = runTest {
         // モックの振る舞いを設定
         whenever(favoriteRepository.isFavorite("sm12345"))
-            .thenReturn(true)
+            .thenReturn(flow { emit(true) })
 
         // テスト実行
-        val result = checkIsFavoriteUseCase.invoke("sm12345")
+        val result = checkIsFavoriteUseCase.invoke("sm12345").first()
 
         // 検証
         assertTrue(result)
@@ -38,10 +40,10 @@ class CheckIsFavoriteUseCaseTest {
     fun お気に入りに未登録の動画の場合falseが返ること() = runTest {
         // モックの振る舞いを設定
         whenever(favoriteRepository.isFavorite("sm99999"))
-            .thenReturn(false)
+            .thenReturn(flow { emit(false) })
 
         // テスト実行
-        val result = checkIsFavoriteUseCase.invoke("sm99999")
+        val result = checkIsFavoriteUseCase.invoke("sm99999").first()
 
         // 検証
         assertFalse(result)
