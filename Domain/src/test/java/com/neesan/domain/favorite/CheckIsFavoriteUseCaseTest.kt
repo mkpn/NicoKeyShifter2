@@ -1,51 +1,76 @@
 package com.neesan.domain.favorite
 
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.neesan.core.runWithDescription
 import com.neesan.data.favorite.FavoriteRepository
+import com.neesan.data.favorite.FavoriteVideoEntity
+import dagger.hilt.android.testing.HiltAndroidRule
+import dagger.hilt.android.testing.HiltAndroidTest
+import dagger.hilt.android.testing.HiltTestApplication
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
-import org.mockito.kotlin.mock
-import org.mockito.kotlin.whenever
+import org.junit.runner.RunWith
+import org.robolectric.annotation.Config
+import javax.inject.Inject
 
+@HiltAndroidTest
+@Config(application = HiltTestApplication::class)
+@RunWith(AndroidJUnit4::class)
 @Suppress("NonAsciiCharacters", "TestFunctionName")
 class CheckIsFavoriteUseCaseTest {
 
-    private lateinit var favoriteRepository: FavoriteRepository
-    private lateinit var checkIsFavoriteUseCase: CheckIsFavoriteUseCase
+    @get:Rule
+    var hiltRule = HiltAndroidRule(this)
+
+    @Inject
+    lateinit var favoriteRepository: FavoriteRepository
+
+    @Inject
+    lateinit var checkIsFavoriteUseCase: CheckIsFavoriteUseCase
+
+    @Inject
+    lateinit var addFavoriteVideoUseCase: AddFavoriteVideoUseCase
 
     @Before
     fun setup() {
-        favoriteRepository = mock()
-        checkIsFavoriteUseCase = CheckIsFavoriteUseCase(favoriteRepository)
+        hiltRule.inject()
     }
 
     @Test
-    fun お気に入りに登録済みの動画の場合trueが返ること() = runTest {
-        // モックの振る舞いを設定
-        whenever(favoriteRepository.isFavorite("sm12345"))
-            .thenReturn(flow { emit(true) })
+    fun お気に入りに登録済みの動画の場合trueが返ること() = runWithDescription {
+        runTest {
+            // テストデータ
+            val favoriteVideoDomainData = FavoriteVideoDomainData(
+                videoId = "sm12345",
+                title = "テスト動画",
+                thumbnailUrl = "test_url",
+                createdAt = 1000L
+            )
 
-        // テスト実行
-        val result = checkIsFavoriteUseCase.invoke("sm12345").first()
+            // お気に入りに追加
+            addFavoriteVideoUseCase.invoke(favoriteVideoDomainData)
 
-        // 検証
-        assertTrue(result)
+            // テスト実行
+            val result = checkIsFavoriteUseCase.invoke("sm12345").first()
+
+            // 検証
+            assertTrue(result)
+        }
     }
 
     @Test
-    fun お気に入りに未登録の動画の場合falseが返ること() = runTest {
-        // モックの振る舞いを設定
-        whenever(favoriteRepository.isFavorite("sm99999"))
-            .thenReturn(flow { emit(false) })
+    fun お気に入りに未登録の動画の場合falseが返ること() = runWithDescription {
+        runTest {
+            // テスト実行
+            val result = checkIsFavoriteUseCase.invoke("sm99999").first()
 
-        // テスト実行
-        val result = checkIsFavoriteUseCase.invoke("sm99999").first()
-
-        // 検証
-        assertFalse(result)
+            // 検証
+            assertFalse(result)
+        }
     }
 }

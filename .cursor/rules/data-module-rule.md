@@ -40,6 +40,11 @@ Data/
 - DAOのテストはin-memoryデータベースを使用
 - テスト用のディスパッチャーは`UnconfinedTestDispatcher`を使用
 - テストケース名は日本語で記述
+- Hilt依存性注入を使用してモックではなくプロダクションコードでテスト実行
+- `@HiltAndroidTest`、`@Config(application = HiltTestApplication::class)`、`@RunWith(AndroidJUnit4::class)`を使用
+- `HiltAndroidRule`を設定し、Hiltルールを注入
+- `runWithDescription`関数を使用してテストケースを記述
+- 必要に応じて他のUseCaseやRepositoryも`@Inject`で注入し、実際のデータ追加・削除操作を含む統合テストを実施
 
 ## データベース
 - Roomを使用してローカルデータベースを実装
