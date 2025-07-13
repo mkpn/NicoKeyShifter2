@@ -57,9 +57,8 @@ class AddFavoriteVideoUseCaseTest {
                 thumbnailUrl = "test_url",
                 createdAt = 1000L
             )
-            favoriteRepository.getFavoriteVideoById("sm12345").collect { entity ->
-                Assert.assertTrue(entity == expectedEntity)
-            }
+            val entity = favoriteRepository.getFavoriteVideoById("sm12345").first()
+            Assert.assertTrue(entity == expectedEntity)
         }
     }
 }
