@@ -3,7 +3,6 @@ package com.neesan.domain.favorite
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.neesan.core.runWithDescription
 import com.neesan.data.favorite.FavoriteRepository
-import com.neesan.data.favorite.FavoriteVideoEntity
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.HiltTestApplication
