@@ -11,3 +11,17 @@ plugins {
     alias(libs.plugins.google.gms.google.services) apply false
     alias(libs.plugins.google.firebase.crashlytics) apply false
 }
+
+buildscript {
+    allprojects {
+        tasks.withType<Test>().configureEach {
+            testLogging {
+                outputs.upToDateWhen { false }
+                showStandardStreams = true
+            }
+            // モジュールを跨いだ依存が必要なユニットテストではhiltを上手く使うのが難しいみたい、
+            // テスト用の実装を自前で注入するために環境変数を用意する
+            systemProperty("isTestEnvironment", "true")
+        }
+    }
+}

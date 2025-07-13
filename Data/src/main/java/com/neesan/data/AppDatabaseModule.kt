@@ -2,6 +2,7 @@ package com.neesan.data
 
 import android.content.Context
 import androidx.room.Room
+import com.neesan.core.isRunningOnTest
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,10 +19,17 @@ object AppDatabaseModule {
     fun provideAppDatabase(
         @ApplicationContext context: Context
     ): AppDatabase {
-        return Room.databaseBuilder(
-            context,
-            AppDatabase::class.java,
-            "nico_key_shifter.db"
-        ).build()
+        if (isRunningOnTest()) {
+            return Room.inMemoryDatabaseBuilder(
+                context,
+                AppDatabase::class.java,
+            ).allowMainThreadQueries().build()
+        } else {
+            return Room.databaseBuilder(
+                context,
+                AppDatabase::class.java,
+                "nico_key_shifter.db"
+            ).build()
+        }
     }
 } 

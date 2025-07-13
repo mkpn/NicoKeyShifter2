@@ -2,7 +2,9 @@ package com.neesan.data.favorite
 
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -14,18 +16,26 @@ class FavoriteRepository @Inject constructor(
     fun getAllFavoriteVideos(): Flow<List<FavoriteVideoEntity>> =
         favoriteVideoDao.getAllFavoriteVideos().flowOn(coroutineDispatcher)
 
-    suspend fun getFavoriteVideoById(videoId: String): FavoriteVideoEntity? =
-        favoriteVideoDao.getFavoriteVideoById(videoId)
+    fun getFavoriteVideoById(videoId: String): Flow<FavoriteVideoEntity?> = flow {
+        emit(favoriteVideoDao.getFavoriteVideoById(videoId))
+    }.flowOn(coroutineDispatcher)
 
     suspend fun addFavoriteVideo(favoriteVideo: FavoriteVideoEntity) =
-        favoriteVideoDao.insertFavoriteVideo(favoriteVideo)
+        withContext(coroutineDispatcher) {
+            favoriteVideoDao.insertFavoriteVideo(favoriteVideo)
+        }
 
     suspend fun removeFavoriteVideo(favoriteVideo: FavoriteVideoEntity) =
-        favoriteVideoDao.deleteFavoriteVideo(favoriteVideo)
+        withContext(coroutineDispatcher) {
+            favoriteVideoDao.deleteFavoriteVideo(favoriteVideo)
+        }
 
     suspend fun removeFavoriteVideoById(videoId: String) =
-        favoriteVideoDao.deleteFavoriteVideoById(videoId)
+        withContext(coroutineDispatcher) {
+            favoriteVideoDao.deleteFavoriteVideoById(videoId)
+        }
 
-    suspend fun isFavorite(videoId: String): Boolean =
-        favoriteVideoDao.isFavorite(videoId)
+    fun isFavorite(videoId: String): Flow<Boolean> = flow {
+        emit(favoriteVideoDao.isFavorite(videoId))
+    }.flowOn(coroutineDispatcher)
 } 
