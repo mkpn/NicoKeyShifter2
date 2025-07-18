@@ -21,7 +21,10 @@ import com.neesan.presentation.search.component.VideoItemRowComponent
  * 検索画面
  */
 @Composable
-fun SearchResultsSection(uiState: SearchVideoUiState) {
+fun SearchResultsSection(
+    uiState: SearchVideoUiState,
+    onFavoriteToggle: (com.neesan.domain.search.VideoDomainModel) -> Unit = {}
+) {
     // 検索結果
     when {
         // 初期状態（検索前）
@@ -60,7 +63,11 @@ fun SearchResultsSection(uiState: SearchVideoUiState) {
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     items(uiState.videos) { video ->
-                        VideoItemRowComponent(video)
+                        VideoItemRowComponent(
+                            video = video,
+                            isFavorite = video.isFavorite,
+                            onFavoriteToggle = onFavoriteToggle
+                        )
                     }
                 }
             }

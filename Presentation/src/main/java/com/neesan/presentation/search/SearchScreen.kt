@@ -51,7 +51,8 @@ fun SearchScreen(
         onClearSearch = viewModel::clearSearch,
         onNotificationRequestFinish = {
             viewModel.updateNotificationPermissionRequested()
-        }
+        },
+        onFavoriteToggle = viewModel::toggleFavorite
     )
 }
 
@@ -62,6 +63,7 @@ private fun SearchContent(
     onSearch: (String) -> Unit,
     onClearSearch: () -> Unit,
     onNotificationRequestFinish: () -> Unit = {},
+    onFavoriteToggle: (com.neesan.domain.search.VideoDomainModel) -> Unit = {}
 ) {
     var searchQuery by remember { mutableStateOf("") }
 
@@ -136,7 +138,10 @@ private fun SearchContent(
                     modifier = Modifier.padding(vertical = 8.dp)
                 )
             }
-            SearchResultsSection(uiState)
+            SearchResultsSection(
+                uiState = uiState,
+                onFavoriteToggle = onFavoriteToggle
+            )
         }
     }
 }

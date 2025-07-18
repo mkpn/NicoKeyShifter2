@@ -3,9 +3,13 @@ package com.neesan.presentation.search
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.neesan.core.exception.SearchException
+import com.neesan.domain.favorite.AddFavoriteVideoUseCase
+import com.neesan.domain.favorite.FavoriteVideoDomainData
+import com.neesan.domain.favorite.RemoveFavoriteVideoByIdUseCase
 import com.neesan.domain.notification.CheckNotificationPermissionRequestedUseCase
 import com.neesan.domain.notification.UpdateNotificationPermissionRequestedUseCase
 import com.neesan.domain.search.SearchVideoUseCase
+import com.neesan.domain.search.VideoDomainModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -25,7 +29,9 @@ import javax.inject.Inject
 class SearchVideoViewModel @Inject constructor(
     private val searchVideoUseCase: SearchVideoUseCase,
     private val checkNotificationPermissionRequestedUseCase: CheckNotificationPermissionRequestedUseCase,
-    private val updateNotificationPermissionRequestedUseCase: UpdateNotificationPermissionRequestedUseCase
+    private val updateNotificationPermissionRequestedUseCase: UpdateNotificationPermissionRequestedUseCase,
+    private val addFavoriteVideoUseCase: AddFavoriteVideoUseCase,
+    private val removeFavoriteVideoByIdUseCase: RemoveFavoriteVideoByIdUseCase
 ) : ViewModel() {
 
     // UI状態
@@ -125,6 +131,43 @@ class SearchVideoViewModel @Inject constructor(
                 currentState.copy(
                     showNotificationPermissionDialog = false
                 )
+            }
+        }
+    }
+
+    /**
+     * お気に入り状態を切り替える
+     */
+    fun toggleFavorite(video: VideoDomainModel) {
+        viewModelScope.launch {
+            if (video.isFavorite) {
+                // お気に入りから削除
+                removeFavoriteVideoByIdUseCase.invoke(video.id)
+                // UI状態を更新
+                _uiState.update { currentState ->
+                    currentState.copy(
+                        videos = currentState.videos.map { 
+                            if (it.id == video.id) it.copy(isFavorite = false) else it
+                        }
+                    )
+                }
+            } else {
+                // お気に入りに追加
+                val favoriteVideo = FavoriteVideoDomainData(
+                    videoId = video.id,
+                    title = video.title,
+                    thumbnailUrl = video.thumbnailUrl,
+                    createdAt = System.currentTimeMillis()
+                )
+                addFavoriteVideoUseCase.invoke(favoriteVideo)
+                // UI状態を更新
+                _uiState.update { currentState ->
+                    currentState.copy(
+                        videos = currentState.videos.map { 
+                            if (it.id == video.id) it.copy(isFavorite = true) else it
+                        }
+                    )
+                }
             }
         }
     }

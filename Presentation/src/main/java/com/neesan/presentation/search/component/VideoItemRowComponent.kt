@@ -8,12 +8,18 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.Card
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextOverflow
@@ -27,7 +33,11 @@ import com.neesan.domain.search.VideoDomainModel
  * 動画アイテム
  */
 @Composable
-fun VideoItemRowComponent(video: VideoDomainModel) {
+fun VideoItemRowComponent(
+    video: VideoDomainModel,
+    isFavorite: Boolean = false,
+    onFavoriteToggle: (VideoDomainModel) -> Unit = {}
+) {
     Card(
         modifier = Modifier.fillMaxWidth()
     ) {
@@ -75,6 +85,17 @@ fun VideoItemRowComponent(video: VideoDomainModel) {
                 Text(
                     text = "ID: ${video.id}",
                     style = MaterialTheme.typography.bodySmall
+                )
+            }
+            
+            // お気に入りボタン
+            IconButton(
+                onClick = { onFavoriteToggle(video) }
+            ) {
+                Icon(
+                    imageVector = if (isFavorite) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
+                    contentDescription = if (isFavorite) "お気に入りから削除" else "お気に入りに追加",
+                    tint = if (isFavorite) Color.Red else MaterialTheme.colorScheme.onSurface
                 )
             }
         }

@@ -1,6 +1,8 @@
 package com.neesan.presentation.search
 
 import com.neesan.core.exception.SearchException
+import com.neesan.domain.favorite.AddFavoriteVideoUseCase
+import com.neesan.domain.favorite.RemoveFavoriteVideoByIdUseCase
 import com.neesan.domain.notification.CheckNotificationPermissionRequestedUseCase
 import com.neesan.domain.notification.UpdateNotificationPermissionRequestedUseCase
 import com.neesan.domain.search.SearchVideoUseCase
@@ -30,6 +32,8 @@ class SearchVideoViewModelTest {
     private lateinit var searchVideoUseCase: SearchVideoUseCase
     private lateinit var checkNotificationPermissionRequestedUseCase: CheckNotificationPermissionRequestedUseCase
     private lateinit var updateNotificationPermissionRequestedUseCase: UpdateNotificationPermissionRequestedUseCase
+    private lateinit var addFavoriteVideoUseCase: AddFavoriteVideoUseCase
+    private lateinit var removeFavoriteVideoByIdUseCase: RemoveFavoriteVideoByIdUseCase
     private lateinit var viewModel: SearchVideoViewModel
 
     @Before
@@ -38,10 +42,14 @@ class SearchVideoViewModelTest {
         searchVideoUseCase = mock()
         checkNotificationPermissionRequestedUseCase = mock()
         updateNotificationPermissionRequestedUseCase = mock()
+        addFavoriteVideoUseCase = mock()
+        removeFavoriteVideoByIdUseCase = mock()
         viewModel = SearchVideoViewModel(
             searchVideoUseCase,
             checkNotificationPermissionRequestedUseCase,
-            updateNotificationPermissionRequestedUseCase
+            updateNotificationPermissionRequestedUseCase,
+            addFavoriteVideoUseCase,
+            removeFavoriteVideoByIdUseCase
         )
     }
 
