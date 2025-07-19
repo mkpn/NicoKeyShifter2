@@ -13,6 +13,11 @@
 - Componentは最も小さいUI単位で他のComposable関数は呼び出せない。小さいUIをprivate関数で持つことがある
 - 上記を基本として、適宜JetpackComposeデフォルトのウィジェットや、自前の小さなprivate関数を組み合わせてUIを構築する
 
+## 遷移の実装について
+- ComposeのNavigationを用いて遷移を行う
+- 遷移先をクラスで表現する。これはXXDestinationという命名規則に従う
+- XXDestinationクラスは、凝集度の高めるためにPresentationのScreenファイルの中に定義する
+
 ## Screen/Contentについて
 - ScreenとContentは1画面全体に相当するComposable関数である
 - ScreenではViewModelの初期化とuiStateの取り出し、Content関数の呼び出しのみを行う
