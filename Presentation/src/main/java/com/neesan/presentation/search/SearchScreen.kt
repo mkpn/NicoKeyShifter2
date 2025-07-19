@@ -38,13 +38,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.neesan.presentation.search.section.SearchResultsSection
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.Transient
 
 /**
  * 検索画面の遷移先情報
  */
+@Serializable
 object SearchDestination : NavigationDestination {
     override val route: String = "search"
     override val label: String = "検索"
+    @Transient
     override val icon: ImageVector = Icons.Filled.Search
 }
 

@@ -23,13 +23,17 @@ import com.neesan.presentation.NavigationDestination
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.ui.graphics.vector.ImageVector
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.Transient
 
 /**
  * お気に入り画面の遷移先情報
  */
+@Serializable
 object FavoriteDestination : NavigationDestination {
     override val route: String = "favorite"
     override val label: String = "お気に入り"
+    @Transient
     override val icon: ImageVector = Icons.Filled.Favorite
 }
 

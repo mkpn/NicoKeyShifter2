@@ -1,7 +1,6 @@
 package com.neesan.presentation
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
@@ -10,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -31,38 +31,45 @@ fun MainScreen() {
         bottomBar = {
             NavigationBar {
                 val navBackStackEntry by navController.currentBackStackEntryAsState()
-                val currentRoute = navBackStackEntry?.destination?.route
+                val currentDestination = navBackStackEntry?.destination
 
-                navItems.forEach { item ->
-                    NavigationBarItem(
-                        selected = currentRoute == item.route,
-                        onClick = {
-                            if (currentRoute != item.route) {
-                                navController.navigate(item.route) {
-                                    popUpTo(navController.graph.findStartDestination().id) {
-                                        saveState = true
-                                    }
-                                    launchSingleTop = true
-                                    restoreState = true
-                                }
-                            }
-                        },
-                        icon = { androidx.compose.material3.Icon(item.icon, contentDescription = item.label) },
-                        label = { Text(item.label) }
-                    )
-                }
+                NavigationBarItem(
+                    selected = currentDestination?.hasRoute<SearchDestination>() == true,
+                    onClick = {
+                        navController.navigate(SearchDestination) {
+                            popUpTo(navController.graph.findStartDestination().id) { saveState = true }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
+                    },
+                    icon = { androidx.compose.material3.Icon(SearchDestination.icon, contentDescription = SearchDestination.label) },
+                    label = { Text(SearchDestination.label) }
+                )
+
+                NavigationBarItem(
+                    selected = currentDestination?.hasRoute<FavoriteDestination>() == true,
+                    onClick = {
+                        navController.navigate(FavoriteDestination) {
+                            popUpTo(navController.graph.findStartDestination().id) { saveState = true }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
+                    },
+                    icon = { androidx.compose.material3.Icon(FavoriteDestination.icon, contentDescription = FavoriteDestination.label) },
+                    label = { Text(FavoriteDestination.label) }
+                )
             }
         }
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = SearchDestination.route,
+            startDestination = SearchDestination,
             modifier = Modifier.padding(innerPadding)
         ) {
-            composable(SearchDestination.route) {
+            composable<SearchDestination> {
                 SearchScreen()
             }
-            composable(FavoriteDestination.route) {
+            composable<FavoriteDestination> {
                 FavoriteScreen()
             }
         }
@@ -75,4 +82,4 @@ private fun PreviewMainScreen() {
     MainScreen()
 }
 
-private val navItems: List<NavigationDestination> = listOf(SearchDestination, FavoriteDestination) 
+// navItems no longer needed thanks to explicit items for type safety 
