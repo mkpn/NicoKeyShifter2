@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import com.neesan.presentation.search.SearchScreen
+import com.neesan.presentation.MainScreen
 import com.neesan.presentation.theme.NicoKeyShifter2Theme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -15,7 +15,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             NicoKeyShifter2Theme {
-                    SearchScreen()
+                    MainScreen()
             }
         }
     }
