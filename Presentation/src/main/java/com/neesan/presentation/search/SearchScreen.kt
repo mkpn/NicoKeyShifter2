@@ -14,6 +14,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Search
+import com.neesan.presentation.NavigationDestination
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -36,6 +38,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.neesan.presentation.search.section.SearchResultsSection
+
+/**
+ * 検索画面の遷移先情報
+ */
+object SearchDestination : NavigationDestination {
+    override val route: String = "search"
+    override val label: String = "検索"
+    override val icon: ImageVector = Icons.Filled.Search
+}
 
 /**
  * 検索画面
