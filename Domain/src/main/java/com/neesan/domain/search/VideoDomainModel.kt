@@ -7,7 +7,8 @@ data class VideoDomainModel(
     val id: String,
     val title: String,
     val viewCount: Int,
-    val thumbnailUrl: String
+    val thumbnailUrl: String,
+    val isFavorite: Boolean = false
 ) {
     companion object {
         fun ofDefault() = VideoDomainModel(

@@ -1,4 +1,4 @@
-package com.neesan.presentation.search.component
+package com.neesan.presentation.favorite.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
@@ -9,8 +9,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -19,7 +18,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextOverflow
@@ -27,16 +25,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
-import com.neesan.domain.search.VideoDomainModel
+import com.neesan.domain.favorite.FavoriteVideoDomainData
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
-/**
- * 動画アイテム
- */
 @Composable
-fun VideoItemRowComponent(
-    video: VideoDomainModel,
-    isFavorite: Boolean = false,
-    onFavoriteToggle: (VideoDomainModel) -> Unit = {}
+fun FavoriteVideoItemComponent(
+    favoriteVideo: FavoriteVideoDomainData,
+    onRemoveFavorite: (String) -> Unit
 ) {
     Card(
         modifier = Modifier.fillMaxWidth()
@@ -47,11 +44,10 @@ fun VideoItemRowComponent(
                 .padding(8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // サムネイル
             Image(
                 painter = rememberAsyncImagePainter(
                     ImageRequest.Builder(LocalContext.current)
-                        .data(video.thumbnailUrl)
+                        .data(favoriteVideo.thumbnailUrl)
                         .crossfade(true)
                         .build()
                 ),
@@ -65,9 +61,8 @@ fun VideoItemRowComponent(
                     .weight(1f)
                     .padding(start = 8.dp)
             ) {
-                // タイトル
                 Text(
-                    text = video.title,
+                    text = favoriteVideo.title,
                     style = MaterialTheme.typography.titleMedium,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis
@@ -75,52 +70,41 @@ fun VideoItemRowComponent(
 
                 Spacer(modifier = Modifier.height(4.dp))
 
-                // 再生回数
                 Text(
-                    text = "再生数: ${formatViewCount(video.viewCount)}",
+                    text = "登録日: ${formatDate(favoriteVideo.createdAt)}",
                     style = MaterialTheme.typography.bodyMedium
                 )
 
-                // ID
                 Text(
-                    text = "ID: ${video.id}",
+                    text = "ID: ${favoriteVideo.videoId}",
                     style = MaterialTheme.typography.bodySmall
                 )
             }
-            
-            // お気に入りボタン
+
             IconButton(
-                onClick = { onFavoriteToggle(video) }
+                onClick = { onRemoveFavorite(favoriteVideo.videoId) }
             ) {
                 Icon(
-                    imageVector = if (isFavorite) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
-                    contentDescription = if (isFavorite) "お気に入りから削除" else "お気に入りに追加",
-                    tint = if (isFavorite) Color.Red else MaterialTheme.colorScheme.onSurface
+                    Icons.Default.Delete,
+                    contentDescription = "お気に入りから削除",
+                    tint = MaterialTheme.colorScheme.error
                 )
             }
         }
     }
 }
 
-/**
- * 再生回数をフォーマットする
- */
-private fun formatViewCount(count: Int): String {
-    return when {
-        count >= 10000 -> "${count / 10000}万"
-        count >= 1000 -> "${count / 1000}千"
-        else -> count.toString()
-    }
+private fun formatDate(timestamp: Long): String {
+    val date = Date(timestamp)
+    val formatter = SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
+    return formatter.format(date)
 }
 
-
-/**
- * Preview関数
- */
 @Preview
 @Composable
-private fun PreviewVideoItemRowComponent() {
-    VideoItemRowComponent(
-        video = VideoDomainModel.ofDefault()
+private fun PreviewFavoriteVideoItemComponent() {
+    FavoriteVideoItemComponent(
+        favoriteVideo = FavoriteVideoDomainData.ofDefault(),
+        onRemoveFavorite = {}
     )
 }
