@@ -25,6 +25,8 @@ import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.ui.graphics.vector.ImageVector
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
+import com.neesan.domain.search.VideoDomainModel
+import com.neesan.domain.favorite.FavoriteVideoDomainData
 
 /**
  * お気に入り画面の遷移先情報
@@ -39,6 +41,7 @@ object FavoriteDestination : NavigationDestination {
 
 @Composable
 fun FavoriteScreen(
+    onVideoClick: (VideoDomainModel) -> Unit = {},
     viewModel: FavoriteVideoViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -46,7 +49,8 @@ fun FavoriteScreen(
         uiState = uiState,
         onRemoveFavorite = viewModel::removeFavoriteVideoById,
         onClearError = viewModel::clearError,
-        onRetry = viewModel::loadFavoriteVideos
+        onRetry = viewModel::loadFavoriteVideos,
+        onVideoClick = onVideoClick
     )
 }
 
@@ -56,7 +60,8 @@ private fun FavoriteContent(
     uiState: FavoriteVideoUiState,
     onRemoveFavorite: (String) -> Unit,
     onClearError: () -> Unit,
-    onRetry: () -> Unit
+    onRetry: () -> Unit,
+    onVideoClick: (VideoDomainModel) -> Unit = {}
 ) {
     Scaffold(
         topBar = {
@@ -90,7 +95,17 @@ private fun FavoriteContent(
 
             FavoriteResultsSection(
                 uiState = uiState,
-                onRemoveFavorite = onRemoveFavorite
+                onRemoveFavorite = onRemoveFavorite,
+                onVideoClick = { favoriteVideo: FavoriteVideoDomainData ->
+                    val video = VideoDomainModel(
+                        id = favoriteVideo.videoId,
+                        title = favoriteVideo.title,
+                        viewCount = 0,
+                        thumbnailUrl = favoriteVideo.thumbnailUrl,
+                        isFavorite = true
+                    )
+                    onVideoClick(video)
+                }
             )
         }
     }
@@ -105,6 +120,7 @@ private fun PreviewFavoriteContent() {
         uiState = previewState,
         onRemoveFavorite = {},
         onClearError = {},
-        onRetry = {}
+        onRetry = {},
+        onVideoClick = {}
     )
 }

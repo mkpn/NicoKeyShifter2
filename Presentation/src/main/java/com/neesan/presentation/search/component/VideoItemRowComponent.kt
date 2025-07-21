@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.clickable
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
@@ -36,10 +37,13 @@ import com.neesan.domain.search.VideoDomainModel
 fun VideoItemRowComponent(
     video: VideoDomainModel,
     isFavorite: Boolean = false,
-    onFavoriteToggle: (VideoDomainModel) -> Unit = {}
+    onFavoriteToggle: (VideoDomainModel) -> Unit = {},
+    onVideoClick: (VideoDomainModel) -> Unit = {}
 ) {
     Card(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { onVideoClick(video) }
     ) {
         Row(
             modifier = Modifier
@@ -121,6 +125,7 @@ private fun formatViewCount(count: Int): String {
 @Composable
 private fun PreviewVideoItemRowComponent() {
     VideoItemRowComponent(
-        video = VideoDomainModel.ofDefault()
+        video = VideoDomainModel.ofDefault(),
+        onVideoClick = {}
     )
 }
