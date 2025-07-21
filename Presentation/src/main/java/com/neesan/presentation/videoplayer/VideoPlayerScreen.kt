@@ -3,18 +3,17 @@ package com.neesan.presentation.videoplayer
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import com.neesan.domain.search.VideoDomainModel
 
 /**
  * 動画再生画面。現状はプレースホルダーとして動画タイトルを表示するのみ。
  */
 @Composable
-fun VideoPlayerScreen(video: VideoDomainModel?) {
-    Text(text = "動画再生画面: ${video?.title ?: "No video"}")
+fun VideoPlayerScreen(destination: VideoPlayerDestination) {
+    Text(text = "動画再生画面: ${destination.title}")
 }
 
 @Preview(showBackground = true)
 @Composable
 private fun PreviewVideoPlayerScreen() {
-    VideoPlayerScreen(VideoDomainModel.ofDefault())
+    VideoPlayerScreen(VideoPlayerDestination(videoId = "sm12345678", title = "サンプル動画", thumbnailUrl = ""))
 } 

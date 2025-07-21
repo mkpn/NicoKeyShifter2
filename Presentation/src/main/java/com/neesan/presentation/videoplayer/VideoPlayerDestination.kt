@@ -1,20 +1,16 @@
 package com.neesan.presentation.videoplayer
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.PlayArrow
-import androidx.compose.ui.graphics.vector.ImageVector
-import com.neesan.presentation.NavigationDestination
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.Transient
 
 /**
- * 動画再生画面の遷移先情報
+ * 動画再生画面の遷移に使用する型安全ルート。
+ * 必要最小限として動画 ID とタイトル、サムネイル URL、
+ * お気に入り状態のみを渡すようにしています。
  */
 @Serializable
-object VideoPlayerDestination : NavigationDestination {
-    override val route: String = "video_player"
-    override val label: String = "動画再生"
-
-    @Transient
-    override val icon: ImageVector = Icons.Filled.PlayArrow
-} 
+data class VideoPlayerDestination(
+    val videoId: String,
+    val title: String,
+    val thumbnailUrl: String = "",
+    val isFavorite: Boolean = false
+) 
