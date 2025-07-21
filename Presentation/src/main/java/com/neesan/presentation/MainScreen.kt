@@ -19,6 +19,9 @@ import com.neesan.presentation.favorite.FavoriteDestination
 import com.neesan.presentation.favorite.FavoriteScreen
 import com.neesan.presentation.search.SearchDestination
 import com.neesan.presentation.search.SearchScreen
+import com.neesan.presentation.videoplayer.VideoPlayerDestination
+import com.neesan.presentation.videoplayer.VideoPlayerScreen
+import androidx.navigation.toRoute
 
 /**
  * メイン画面。下部のタブで検索画面とお気に入り画面を切り替える。
@@ -67,10 +70,36 @@ fun MainScreen() {
             modifier = Modifier.padding(innerPadding)
         ) {
             composable<SearchDestination> {
-                SearchScreen()
+                SearchScreen(
+                    onVideoClick = { video ->
+                        navController.navigate(
+                            VideoPlayerDestination(
+                                videoId = video.id,
+                                title = video.title,
+                                thumbnailUrl = video.thumbnailUrl,
+                                isFavorite = video.isFavorite
+                            )
+                        )
+                    }
+                )
             }
             composable<FavoriteDestination> {
-                FavoriteScreen()
+                FavoriteScreen(
+                    onVideoClick = { video ->
+                        navController.navigate(
+                            VideoPlayerDestination(
+                                videoId = video.id,
+                                title = video.title,
+                                thumbnailUrl = video.thumbnailUrl,
+                                isFavorite = video.isFavorite
+                            )
+                        )
+                    }
+                )
+            }
+            composable<VideoPlayerDestination> { backStackEntry ->
+                val destination = backStackEntry.toRoute<VideoPlayerDestination>()
+                VideoPlayerScreen(destination)
             }
         }
     }

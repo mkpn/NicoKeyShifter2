@@ -16,6 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.neesan.presentation.search.SearchVideoUiState
 import com.neesan.presentation.search.component.VideoItemRowComponent
+import com.neesan.domain.search.VideoDomainModel
 
 /**
  * 検索画面
@@ -23,7 +24,8 @@ import com.neesan.presentation.search.component.VideoItemRowComponent
 @Composable
 fun SearchResultsSection(
     uiState: SearchVideoUiState,
-    onFavoriteToggle: (com.neesan.domain.search.VideoDomainModel) -> Unit = {}
+    onFavoriteToggle: (VideoDomainModel) -> Unit = {},
+    onVideoClick: (VideoDomainModel) -> Unit = {}
 ) {
     // 検索結果
     when {
@@ -66,7 +68,8 @@ fun SearchResultsSection(
                         VideoItemRowComponent(
                             video = video,
                             isFavorite = video.isFavorite,
-                            onFavoriteToggle = onFavoriteToggle
+                            onFavoriteToggle = onFavoriteToggle,
+                            onVideoClick = onVideoClick
                         )
                     }
                 }
@@ -83,6 +86,7 @@ fun SearchResultsSection(
 private fun PreviewSearchResultsSection() {
     val previewState = SearchVideoUiState.ofDefault()
     SearchResultsSection(
-        uiState = previewState
+        uiState = previewState,
+        onVideoClick = {}
     )
 }

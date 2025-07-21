@@ -16,11 +16,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.neesan.presentation.favorite.FavoriteVideoUiState
 import com.neesan.presentation.favorite.component.FavoriteVideoItemComponent
+import com.neesan.domain.favorite.FavoriteVideoDomainData
 
 @Composable
 fun FavoriteResultsSection(
     uiState: FavoriteVideoUiState,
-    onRemoveFavorite: (String) -> Unit
+    onRemoveFavorite: (String) -> Unit,
+    onVideoClick: (FavoriteVideoDomainData) -> Unit = {}
 ) {
     when {
         uiState.isFavoriteEmpty && !uiState.isLoading -> {
@@ -48,7 +50,8 @@ fun FavoriteResultsSection(
                     items(uiState.favoriteVideos) { favoriteVideo ->
                         FavoriteVideoItemComponent(
                             favoriteVideo = favoriteVideo,
-                            onRemoveFavorite = onRemoveFavorite
+                            onRemoveFavorite = onRemoveFavorite,
+                            onVideoClick = onVideoClick
                         )
                     }
                 }
@@ -63,6 +66,7 @@ private fun PreviewFavoriteResultsSection() {
     val previewState = FavoriteVideoUiState.ofDefault()
     FavoriteResultsSection(
         uiState = previewState,
-        onRemoveFavorite = {}
+        onRemoveFavorite = {},
+        onVideoClick = {}
     )
 }

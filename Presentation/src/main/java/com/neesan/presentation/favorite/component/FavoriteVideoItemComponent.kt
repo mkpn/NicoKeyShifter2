@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.clickable
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Card
@@ -33,10 +34,13 @@ import java.util.Locale
 @Composable
 fun FavoriteVideoItemComponent(
     favoriteVideo: FavoriteVideoDomainData,
-    onRemoveFavorite: (String) -> Unit
+    onRemoveFavorite: (String) -> Unit,
+    onVideoClick: (FavoriteVideoDomainData) -> Unit = {}
 ) {
     Card(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { onVideoClick(favoriteVideo) }
     ) {
         Row(
             modifier = Modifier
@@ -105,6 +109,7 @@ private fun formatDate(timestamp: Long): String {
 private fun PreviewFavoriteVideoItemComponent() {
     FavoriteVideoItemComponent(
         favoriteVideo = FavoriteVideoDomainData.ofDefault(),
-        onRemoveFavorite = {}
+        onRemoveFavorite = {},
+        onVideoClick = {}
     )
 }

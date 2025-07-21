@@ -40,6 +40,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.neesan.presentation.search.section.SearchResultsSection
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
+import com.neesan.domain.search.VideoDomainModel
 
 /**
  * 検索画面の遷移先情報
@@ -57,6 +58,7 @@ object SearchDestination : NavigationDestination {
  */
 @Composable
 fun SearchScreen(
+    onVideoClick: (VideoDomainModel) -> Unit = {},
     viewModel: SearchVideoViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -67,7 +69,8 @@ fun SearchScreen(
         onNotificationRequestFinish = {
             viewModel.updateNotificationPermissionRequested()
         },
-        onFavoriteToggle = viewModel::toggleFavorite
+        onFavoriteToggle = viewModel::toggleFavorite,
+        onVideoClick = onVideoClick
     )
 }
 
@@ -78,7 +81,8 @@ private fun SearchContent(
     onSearch: (String) -> Unit,
     onClearSearch: () -> Unit,
     onNotificationRequestFinish: () -> Unit = {},
-    onFavoriteToggle: (com.neesan.domain.search.VideoDomainModel) -> Unit = {}
+    onFavoriteToggle: (VideoDomainModel) -> Unit = {},
+    onVideoClick: (VideoDomainModel) -> Unit = {}
 ) {
     var searchQuery by remember { mutableStateOf("") }
 
@@ -155,7 +159,8 @@ private fun SearchContent(
             }
             SearchResultsSection(
                 uiState = uiState,
-                onFavoriteToggle = onFavoriteToggle
+                onFavoriteToggle = onFavoriteToggle,
+                onVideoClick = onVideoClick
             )
         }
     }
@@ -172,6 +177,7 @@ private fun PreviewSearchContent() {
     SearchContent(
         uiState = previewState,
         onSearch = {},
-        onClearSearch = {}
+        onClearSearch = {},
+        onVideoClick = {}
     )
 }
