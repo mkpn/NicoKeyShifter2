@@ -15,13 +15,17 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
 import com.neesan.presentation.favorite.FavoriteDestination
 import com.neesan.presentation.favorite.FavoriteScreen
 import com.neesan.presentation.search.SearchDestination
 import com.neesan.presentation.search.SearchScreen
 import com.neesan.presentation.videoplayer.VideoPlayerDestination
 import com.neesan.presentation.videoplayer.VideoPlayerScreen
-import androidx.navigation.toRoute
+
+// ボトムナビゲーションを適用したいスクリーンのリスト
+// navControllerのAPIの都合でjavaClass.nameを使う
+val topRoutes = listOf(SearchDestination.javaClass.name, FavoriteDestination.javaClass.name)
 
 /**
  * メイン画面。下部のタブで検索画面とお気に入り画面を切り替える。
@@ -32,35 +36,52 @@ fun MainScreen() {
 
     Scaffold(
         bottomBar = {
-            NavigationBar {
-                val navBackStackEntry by navController.currentBackStackEntryAsState()
-                val currentDestination = navBackStackEntry?.destination
+            val navBackStackEntry by navController.currentBackStackEntryAsState()
+            val currentDestination = navBackStackEntry?.destination
+            val currentRoute = currentDestination?.route ?: ""
 
-                NavigationBarItem(
-                    selected = currentDestination?.hasRoute<SearchDestination>() == true,
-                    onClick = {
-                        navController.navigate(SearchDestination) {
-                            popUpTo(navController.graph.findStartDestination().id) { saveState = true }
-                            launchSingleTop = true
-                            restoreState = true
-                        }
-                    },
-                    icon = { androidx.compose.material3.Icon(SearchDestination.icon, contentDescription = SearchDestination.label) },
-                    label = { Text(SearchDestination.label) }
-                )
+            if (topRoutes.contains(currentRoute)) {
+                NavigationBar {
+                    NavigationBarItem(
+                        selected = currentDestination?.hasRoute<SearchDestination>() == true,
+                        onClick = {
+                            navController.navigate(SearchDestination) {
+                                popUpTo(navController.graph.findStartDestination().id) {
+                                    saveState = true
+                                }
+                                launchSingleTop = true
+                                restoreState = true
+                            }
+                        },
+                        icon = {
+                            androidx.compose.material3.Icon(
+                                SearchDestination.icon,
+                                contentDescription = SearchDestination.label
+                            )
+                        },
+                        label = { Text(SearchDestination.label) }
+                    )
 
-                NavigationBarItem(
-                    selected = currentDestination?.hasRoute<FavoriteDestination>() == true,
-                    onClick = {
-                        navController.navigate(FavoriteDestination) {
-                            popUpTo(navController.graph.findStartDestination().id) { saveState = true }
-                            launchSingleTop = true
-                            restoreState = true
-                        }
-                    },
-                    icon = { androidx.compose.material3.Icon(FavoriteDestination.icon, contentDescription = FavoriteDestination.label) },
-                    label = { Text(FavoriteDestination.label) }
-                )
+                    NavigationBarItem(
+                        selected = currentDestination?.hasRoute<FavoriteDestination>() == true,
+                        onClick = {
+                            navController.navigate(FavoriteDestination) {
+                                popUpTo(navController.graph.findStartDestination().id) {
+                                    saveState = true
+                                }
+                                launchSingleTop = true
+                                restoreState = true
+                            }
+                        },
+                        icon = {
+                            androidx.compose.material3.Icon(
+                                FavoriteDestination.icon,
+                                contentDescription = FavoriteDestination.label
+                            )
+                        },
+                        label = { Text(FavoriteDestination.label) }
+                    )
+                }
             }
         }
     ) { innerPadding ->
@@ -110,5 +131,3 @@ fun MainScreen() {
 private fun PreviewMainScreen() {
     MainScreen()
 }
-
-// navItems no longer needed thanks to explicit items for type safety 
