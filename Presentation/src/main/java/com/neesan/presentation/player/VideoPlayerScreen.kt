@@ -1,4 +1,4 @@
-package com.neesan.presentation.videoplayer
+package com.neesan.presentation.player
 
 import android.util.Base64
 import android.util.Log
@@ -45,6 +45,20 @@ import androidx.media3.ui.compose.PlayerSurface
 import androidx.media3.ui.compose.SURFACE_TYPE_SURFACE_VIEW
 import androidx.media3.common.util.UnstableApi
 import androidx.compose.foundation.clickable
+import kotlinx.serialization.Serializable
+
+/**
+ * 動画再生画面の遷移に使用する型安全ルート。
+ * 必要最小限として動画 ID とタイトル、サムネイル URL、
+ * お気に入り状態のみを渡すようにしています。
+ */
+@Serializable
+data class PlayerDestination(
+    val videoId: String,
+    val title: String,
+    val thumbnailUrl: String = "",
+    val isFavorite: Boolean = false
+)
 
 /**
  * 音声リソース監視用のカスタムWebViewClient
@@ -87,7 +101,7 @@ private class AudioResourceMonitoringWebViewClient(
  * 動画再生画面。音声リソースの検出とURLの表示機能付き
  */
 @Composable
-fun VideoPlayerScreen(destination: VideoPlayerDestination) {
+fun VideoPlayerScreen(destination: PlayerDestination) {
     VideoPlayerContent(
         videoId = destination.videoId,
         title = destination.title
