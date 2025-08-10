@@ -20,8 +20,8 @@ import com.neesan.presentation.favorite.FavoriteDestination
 import com.neesan.presentation.favorite.FavoriteScreen
 import com.neesan.presentation.search.SearchDestination
 import com.neesan.presentation.search.SearchScreen
-import com.neesan.presentation.videoplayer.VideoPlayerDestination
-import com.neesan.presentation.videoplayer.VideoPlayerScreen
+import com.neesan.presentation.player.PlayerDestination
+import com.neesan.presentation.player.VideoPlayerScreen
 
 // ボトムナビゲーションを適用したいスクリーンのリスト
 // navControllerのAPIの都合でjavaClass.nameを使う
@@ -94,7 +94,7 @@ fun MainScreen() {
                 SearchScreen(
                     onVideoClick = { video ->
                         navController.navigate(
-                            VideoPlayerDestination(
+                            PlayerDestination(
                                 videoId = video.id,
                                 title = video.title,
                                 thumbnailUrl = video.thumbnailUrl,
@@ -108,7 +108,7 @@ fun MainScreen() {
                 FavoriteScreen(
                     onVideoClick = { video ->
                         navController.navigate(
-                            VideoPlayerDestination(
+                            PlayerDestination(
                                 videoId = video.id,
                                 title = video.title,
                                 thumbnailUrl = video.thumbnailUrl,
@@ -118,8 +118,8 @@ fun MainScreen() {
                     }
                 )
             }
-            composable<VideoPlayerDestination> { backStackEntry ->
-                val destination = backStackEntry.toRoute<VideoPlayerDestination>()
+            composable<PlayerDestination> { backStackEntry ->
+                val destination = backStackEntry.toRoute<PlayerDestination>()
                 VideoPlayerScreen(destination)
             }
         }
