@@ -27,6 +27,7 @@ kotlinxCoroutinesTest = "1.7.3"
 coil = "2.6.0"
 appcompat = "1.7.0"
 material = "1.12.0"
+materialIconsExtended = "1.7.8"
 roomRuntime = "2.6.1"
 
 [libraries]
@@ -66,6 +67,7 @@ robolectric = { group = "org.robolectric", name = "robolectric", version.ref = "
 kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinxCoroutinesTest" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+androidx-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref= "materialIconsExtended" }
 androidx-room-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomRuntime" }
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomRuntime" }
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomRuntime" }
