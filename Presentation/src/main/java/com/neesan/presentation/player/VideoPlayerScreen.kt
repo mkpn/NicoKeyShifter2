@@ -10,7 +10,6 @@ import android.webkit.WebViewClient
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -25,8 +24,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.media3.common.util.UnstableApi
-import androidx.compose.foundation.layout.Box
-import androidx.media3.common.PlaybackParameters
 import com.neesan.presentation.isPreview
 import com.neesan.presentation.player.section.PlayerSection
 import kotlinx.serialization.Serializable
@@ -150,7 +147,6 @@ private fun VideoPlayerContent(videoId: String, title: String) {
                 streamingUrl = streamingUrl,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(250.dp)
                     .padding(16.dp)
             )
         }

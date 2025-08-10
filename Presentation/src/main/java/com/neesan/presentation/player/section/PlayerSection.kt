@@ -1,13 +1,13 @@
 package com.neesan.presentation.player.section
 
 import androidx.annotation.OptIn
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -26,8 +26,6 @@ import androidx.media3.common.util.UnstableApi
 import androidx.media3.datasource.DefaultHttpDataSource
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.hls.HlsMediaSource
-import androidx.media3.ui.compose.PlayerSurface
-import androidx.media3.ui.compose.SURFACE_TYPE_SURFACE_VIEW
 import com.neesan.presentation.isPreview
 import com.neesan.presentation.player.component.PitchControllerComponent
 import com.neesan.presentation.player.component.PlayPauseButtonComponent
@@ -69,7 +67,7 @@ fun PlayerSection(
             player?.prepare()
         }
     }
-    
+
     LaunchedEffect(currentKey) {
         updatePitch(player, currentKey)
     }
@@ -81,27 +79,22 @@ fun PlayerSection(
         }
     }
 
-    Column {
+    Column(modifier = modifier) {
         // ExoPlayerを使用したストリーミング再生
-        Box(
-            modifier = modifier,
-            contentAlignment = Alignment.Center
+        Row(
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            PlayerSurface(
-                player = player,
-                surfaceType = SURFACE_TYPE_SURFACE_VIEW,
-                modifier = Modifier.fillMaxSize()
-            )
             PlayPauseButtonComponent(
                 player = player,
-                modifier = Modifier.size(64.dp)
+                modifier = Modifier.size(24.dp)
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            SeekBarComponent(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                player = player,
             )
         }
-
-        SeekBarComponent(
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
-            player = player,
-        )
         PitchControllerComponent(
             currentKey = currentKey,
             onPitchUp = { currentKey += 1.0 },
@@ -128,7 +121,6 @@ private fun PreviewPlayerSection() {
         streamingUrl = "https://example.com/stream.m3u8",
         modifier = Modifier
             .fillMaxWidth()
-            .height(250.dp)
-            .padding(16.dp)
+            .padding(horizontal = 16.dp)
     )
 }
