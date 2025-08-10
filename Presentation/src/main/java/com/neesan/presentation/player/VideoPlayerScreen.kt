@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.media3.common.util.UnstableApi
 import androidx.compose.foundation.layout.Box
+import androidx.media3.common.PlaybackParameters
 import com.neesan.presentation.isPreview
 import com.neesan.presentation.player.section.PlayerSection
 import kotlinx.serialization.Serializable
@@ -114,12 +115,11 @@ private fun VideoPlayerContent(videoId: String, title: String) {
         // WebViewで音声URLを検出
         if (!isPreview()) {
             AndroidView(
-                modifier = Modifier.weight(1f),
                 factory = {
                     WebView(it).apply {
                         layoutParams = ViewGroup.LayoutParams(
-                            ViewGroup.LayoutParams.MATCH_PARENT,
-                            ViewGroup.LayoutParams.MATCH_PARENT
+                            ViewGroup.LayoutParams.MATCH_PARENT, // width
+                            ViewGroup.LayoutParams.WRAP_CONTENT // height
                         )
                         settings.javaScriptEnabled = true
                         settings.domStorageEnabled = true
@@ -144,30 +144,30 @@ private fun VideoPlayerContent(videoId: String, title: String) {
             )
         }
 
-            if (streamingUrl != null) {
-                // ExoPlayerを使用したストリーミング再生
-                PlayerSection(
-                    streamingUrl = streamingUrl,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(250.dp)
-                        .padding(16.dp)
-                )
-            }
+        if (streamingUrl != null) {
+            // ExoPlayerを使用したストリーミング再生
+            PlayerSection(
+                streamingUrl = streamingUrl,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(250.dp)
+                    .padding(16.dp)
+            )
+        }
 
-            // 検出されたURLの表示（デバッグ用）
-            if (detectedAudioUrls.isNotEmpty()) {
-                Text(
-                    text = "検出されたストリーミングURL: ${detectedAudioUrls.size}個",
-                    modifier = Modifier.padding(16.dp),
-                    style = MaterialTheme.typography.bodySmall
-                )
-            }
+        // 検出されたURLの表示（デバッグ用）
+        if (detectedAudioUrls.isNotEmpty()) {
+            Text(
+                text = "検出されたストリーミングURL: ${detectedAudioUrls.size}個",
+                modifier = Modifier.padding(16.dp),
+                style = MaterialTheme.typography.bodySmall
+            )
         }
     }
+}
 
-    @Preview(showBackground = true)
-    @Composable
-    private fun PreviewVideoPlayerContent() {
-        VideoPlayerContent(videoId = "sm12345678", title = "サンプル動画")
-    }
+@Preview(showBackground = true)
+@Composable
+private fun PreviewVideoPlayerContent() {
+    VideoPlayerContent(videoId = "sm12345678", title = "サンプル動画")
+}
