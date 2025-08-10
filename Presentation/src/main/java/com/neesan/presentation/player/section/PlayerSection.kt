@@ -1,13 +1,13 @@
 package com.neesan.presentation.player.section
 
 import androidx.annotation.OptIn
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -26,11 +26,10 @@ import androidx.media3.common.util.UnstableApi
 import androidx.media3.datasource.DefaultHttpDataSource
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.hls.HlsMediaSource
-import androidx.media3.ui.compose.PlayerSurface
-import androidx.media3.ui.compose.SURFACE_TYPE_SURFACE_VIEW
 import com.neesan.presentation.isPreview
 import com.neesan.presentation.player.component.PitchControllerComponent
 import com.neesan.presentation.player.component.PlayPauseButtonComponent
+import com.neesan.presentation.player.component.SeekBarComponent
 import kotlin.math.pow
 
 @OptIn(UnstableApi::class)
@@ -43,7 +42,7 @@ fun PlayerSection(
     val isPreview = isPreview()
     var currentKey by remember { mutableStateOf(0.0) }
 
-    val exoPlayer = remember {
+    val player = remember {
         if (isPreview) {
             // PreviewモードではExoPlayerを使用しない
             return@remember null
@@ -64,36 +63,36 @@ fun PlayerSection(
                 .createMediaSource(MediaItem.fromUri(url))
 
             // ExoPlayerにHLS MediaSourceを設定
-            exoPlayer?.setMediaSource(hlsMediaSource)
-            exoPlayer?.prepare()
+            player?.setMediaSource(hlsMediaSource)
+            player?.prepare()
         }
     }
-    
+
     LaunchedEffect(currentKey) {
-        updatePitch(exoPlayer, currentKey)
+        updatePitch(player, currentKey)
     }
 
     // プレイヤーのクリーンアップ
-    DisposableEffect(exoPlayer) {
+    DisposableEffect(player) {
         onDispose {
-            exoPlayer?.release()
+            player?.release()
         }
     }
 
-    Column {
+    Column(modifier = modifier) {
         // ExoPlayerを使用したストリーミング再生
-        Box(
-            modifier = modifier,
-            contentAlignment = Alignment.Center
+        Row(
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            PlayerSurface(
-                player = exoPlayer,
-                surfaceType = SURFACE_TYPE_SURFACE_VIEW,
-                modifier = Modifier.fillMaxSize()
-            )
             PlayPauseButtonComponent(
-                player = exoPlayer,
-                modifier = Modifier.size(64.dp)
+                player = player,
+                modifier = Modifier.size(24.dp)
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            SeekBarComponent(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                player = player,
             )
         }
         PitchControllerComponent(
@@ -122,7 +121,6 @@ private fun PreviewPlayerSection() {
         streamingUrl = "https://example.com/stream.m3u8",
         modifier = Modifier
             .fillMaxWidth()
-            .height(250.dp)
-            .padding(16.dp)
+            .padding(horizontal = 16.dp)
     )
 }

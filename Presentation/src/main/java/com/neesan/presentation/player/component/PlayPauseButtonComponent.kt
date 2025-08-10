@@ -3,15 +3,12 @@
 package com.neesan.presentation.player.component
 
 import androidx.annotation.OptIn
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -28,7 +25,7 @@ internal fun PlayPauseButtonComponent(player: Player?, modifier: Modifier = Modi
     if (isPreview()) {
         // Previewモードでは何もしない
         PlayPauseIconButton(
-            modifier = Modifier.size(48.dp),
+            modifier = modifier,
             icon = Icons.Default.PlayArrow,
             contentDescription = "preview",
             onClick = {}
@@ -57,11 +54,7 @@ private fun PlayPauseIconButton(
     onClick: () -> Unit,
 ) {
     IconButton(
-        modifier = modifier
-            .background(
-                color = MaterialTheme.colorScheme.primary,
-                shape = CircleShape
-            ),
+        modifier = modifier,
         onClick = onClick,
     ) {
         Icon(
@@ -71,22 +64,22 @@ private fun PlayPauseIconButton(
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun PreviewPlayPauseButton_再生() {
     PlayPauseIconButton(
-        modifier = Modifier.size(48.dp),
+        modifier = Modifier.size(24.dp),
         icon = Icons.Default.PlayArrow,
         contentDescription = "preview",
         onClick = {}
     )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun PreviewPlayPauseButton_一時停止() {
     PlayPauseIconButton(
-        modifier = Modifier.size(48.dp),
+        modifier = Modifier.size(24.dp),
         icon = Icons.Default.Pause,
         contentDescription = "preview",
         onClick = {}
