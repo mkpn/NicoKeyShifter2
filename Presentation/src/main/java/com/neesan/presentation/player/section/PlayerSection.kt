@@ -31,6 +31,7 @@ import androidx.media3.ui.compose.SURFACE_TYPE_SURFACE_VIEW
 import com.neesan.presentation.isPreview
 import com.neesan.presentation.player.component.PitchControllerComponent
 import com.neesan.presentation.player.component.PlayPauseButtonComponent
+import com.neesan.presentation.player.component.SeekBarComponent
 import kotlin.math.pow
 
 @OptIn(UnstableApi::class)
@@ -43,7 +44,7 @@ fun PlayerSection(
     val isPreview = isPreview()
     var currentKey by remember { mutableStateOf(0.0) }
 
-    val exoPlayer = remember {
+    val player = remember {
         if (isPreview) {
             // PreviewモードではExoPlayerを使用しない
             return@remember null
@@ -64,19 +65,19 @@ fun PlayerSection(
                 .createMediaSource(MediaItem.fromUri(url))
 
             // ExoPlayerにHLS MediaSourceを設定
-            exoPlayer?.setMediaSource(hlsMediaSource)
-            exoPlayer?.prepare()
+            player?.setMediaSource(hlsMediaSource)
+            player?.prepare()
         }
     }
     
     LaunchedEffect(currentKey) {
-        updatePitch(exoPlayer, currentKey)
+        updatePitch(player, currentKey)
     }
 
     // プレイヤーのクリーンアップ
-    DisposableEffect(exoPlayer) {
+    DisposableEffect(player) {
         onDispose {
-            exoPlayer?.release()
+            player?.release()
         }
     }
 
@@ -87,15 +88,20 @@ fun PlayerSection(
             contentAlignment = Alignment.Center
         ) {
             PlayerSurface(
-                player = exoPlayer,
+                player = player,
                 surfaceType = SURFACE_TYPE_SURFACE_VIEW,
                 modifier = Modifier.fillMaxSize()
             )
             PlayPauseButtonComponent(
-                player = exoPlayer,
+                player = player,
                 modifier = Modifier.size(64.dp)
             )
         }
+
+        SeekBarComponent(
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+            player = player,
+        )
         PitchControllerComponent(
             currentKey = currentKey,
             onPitchUp = { currentKey += 1.0 },
