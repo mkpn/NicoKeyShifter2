@@ -80,6 +80,11 @@ dependencies {
     // kotlin coroutines
     implementation(libs.kotlinx.coroutines.test)
     
+    // For media playback using ExoPlayer
+    implementation(libs.androidx.media3.exoplayer)
+    implementation(libs.androidx.media3.ui.compose)
+    implementation(libs.androidx.media3.exoplayer.hls)
+
     // mockito for testing
     testImplementation("org.mockito:mockito-core:5.10.0")
     testImplementation("org.mockito.kotlin:mockito-kotlin:5.2.1")
