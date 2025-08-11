@@ -1,5 +1,6 @@
 package com.neesan.domain.search
 
+import com.neesan.data.favorite.FavoriteRepository
 import com.neesan.data.search.SearchRepository
 import com.neesan.data.search.SearchVideoResponse
 import com.neesan.data.search.Video
@@ -16,12 +17,14 @@ import org.mockito.kotlin.whenever
 class SearchVideoUseCaseTest {
 
     private lateinit var searchRepository: SearchRepository
+    private lateinit var favoriteRepository: FavoriteRepository
     private lateinit var searchVideoUseCase: SearchVideoUseCase
 
     @Before
     fun setup() {
         searchRepository = mock()
-        searchVideoUseCase = SearchVideoUseCase(searchRepository)
+        favoriteRepository = mock()
+        searchVideoUseCase = SearchVideoUseCase(searchRepository, favoriteRepository)
     }
 
     @Test
@@ -37,6 +40,10 @@ class SearchVideoUseCaseTest {
             .thenReturn(flow { 
                 emit(SearchVideoResponse(mockVideos)) 
             })
+        
+        // お気に入り状態のモック設定（すべてfalse）
+        whenever(favoriteRepository.isFavorite("1")).thenReturn(flow { emit(false) })
+        whenever(favoriteRepository.isFavorite("2")).thenReturn(flow { emit(false) })
 
         // テスト実行
         val result = searchVideoUseCase.invoke("テスト").first()
