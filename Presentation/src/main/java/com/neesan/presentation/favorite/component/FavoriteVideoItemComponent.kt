@@ -1,6 +1,7 @@
 package com.neesan.presentation.favorite.component
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -8,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.clickable
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Card
@@ -27,10 +27,6 @@ import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import com.neesan.domain.favorite.FavoriteVideoDomainData
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
-import kotlin.math.absoluteValue
 
 @Composable
 fun FavoriteVideoItemComponent(
@@ -76,18 +72,8 @@ fun FavoriteVideoItemComponent(
                 Spacer(modifier = Modifier.height(4.dp))
 
                 Text(
-                    text = "登録日: ${formatDate(favoriteVideo.createdAt)}",
+                    text = "Key: ${favoriteVideo.keyValue.toKeyText()}",
                     style = MaterialTheme.typography.bodyMedium
-                )
-
-                Text(
-                    text = "ID: ${favoriteVideo.videoId}",
-                    style = MaterialTheme.typography.bodySmall
-                )
-                
-                Text(
-                    text = "キー: ${generateKeyText(favoriteVideo.keyValue)}",
-                    style = MaterialTheme.typography.bodySmall
                 )
             }
 
@@ -102,19 +88,6 @@ fun FavoriteVideoItemComponent(
             }
         }
     }
-}
-
-private fun formatDate(timestamp: Long): String {
-    val date = Date(timestamp)
-    val formatter = SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
-    return formatter.format(date)
-}
-
-private fun generateKeyText(key: Double): String {
-    val prefix = if (key == 0.0) "±" else if (key > 0) "♯" else "♭"
-
-    val absoluteKey = key.absoluteValue.toInt()
-    return "$prefix$absoluteKey"
 }
 
 @Preview

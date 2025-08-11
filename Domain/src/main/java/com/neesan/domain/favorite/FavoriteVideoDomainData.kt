@@ -1,5 +1,7 @@
 package com.neesan.domain.favorite
 
+import com.neesan.core.valueClass.PitchKey
+
 /**
  * お気に入り動画のドメインデータ
  */
@@ -8,7 +10,7 @@ data class FavoriteVideoDomainData(
     val title: String,
     val thumbnailUrl: String,
     val createdAt: Long,
-    val keyValue: Double = 0.0
+    val keyValue: PitchKey = PitchKey(0.0)
 ){
     companion object {
         fun ofDefault() = FavoriteVideoDomainData(
@@ -16,7 +18,7 @@ data class FavoriteVideoDomainData(
             title = "サンプルお気に入り動画",
             thumbnailUrl = "",
             createdAt = System.currentTimeMillis(),
-            keyValue = 0.0
+            keyValue = PitchKey(0.0)
         )
     }
 }

@@ -158,7 +158,6 @@ class SearchVideoViewModel @Inject constructor(
                     title = video.title,
                     thumbnailUrl = video.thumbnailUrl,
                     createdAt = System.currentTimeMillis(),
-                    keyValue = 0.0
                 )
                 addFavoriteVideoUseCase.invoke(favoriteVideo)
                 // UI状態を更新
