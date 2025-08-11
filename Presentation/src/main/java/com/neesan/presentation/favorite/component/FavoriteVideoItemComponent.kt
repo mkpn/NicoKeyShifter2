@@ -30,6 +30,7 @@ import com.neesan.domain.favorite.FavoriteVideoDomainData
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import kotlin.math.absoluteValue
 
 @Composable
 fun FavoriteVideoItemComponent(
@@ -83,6 +84,11 @@ fun FavoriteVideoItemComponent(
                     text = "ID: ${favoriteVideo.videoId}",
                     style = MaterialTheme.typography.bodySmall
                 )
+                
+                Text(
+                    text = "キー: ${generateKeyText(favoriteVideo.keyValue)}",
+                    style = MaterialTheme.typography.bodySmall
+                )
             }
 
             IconButton(
@@ -102,6 +108,13 @@ private fun formatDate(timestamp: Long): String {
     val date = Date(timestamp)
     val formatter = SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
     return formatter.format(date)
+}
+
+private fun generateKeyText(key: Double): String {
+    val prefix = if (key == 0.0) "±" else if (key > 0) "♯" else "♭"
+
+    val absoluteKey = key.absoluteValue.toInt()
+    return "$prefix$absoluteKey"
 }
 
 @Preview

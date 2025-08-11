@@ -9,5 +9,6 @@ data class FavoriteVideoEntity(
     val videoId: String,
     val title: String,
     val thumbnailUrl: String,
-    val createdAt: Long = System.currentTimeMillis()
-) 
+    val createdAt: Long = System.currentTimeMillis(),
+    val keyValue: Double = 0.0
+)   

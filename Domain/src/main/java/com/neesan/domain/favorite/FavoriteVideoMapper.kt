@@ -8,7 +8,8 @@ object FavoriteVideoMapper {
             videoId = videoId,
             title = title,
             thumbnailUrl = thumbnailUrl,
-            createdAt = createdAt
+            createdAt = createdAt,
+            keyValue = keyValue
         )
     }
 
@@ -17,7 +18,8 @@ object FavoriteVideoMapper {
             videoId = videoId,
             title = title,
             thumbnailUrl = thumbnailUrl,
-            createdAt = createdAt
+            createdAt = createdAt,
+            keyValue = keyValue
         )
     }
 }
