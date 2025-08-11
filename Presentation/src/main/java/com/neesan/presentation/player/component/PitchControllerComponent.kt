@@ -12,10 +12,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import kotlin.math.absoluteValue
+import com.neesan.core.valueClass.PitchKey
 
 @Composable
-fun PitchControllerComponent(currentKey: Double, onPitchUp: () -> Unit, onPitchDown: () -> Unit) {
+fun PitchControllerComponent(currentKey: PitchKey, onPitchUp: () -> Unit, onPitchDown: () -> Unit) {
     // ボタンを等間隔に並べるRow
     Row(
         modifier = Modifier
@@ -34,7 +34,7 @@ fun PitchControllerComponent(currentKey: Double, onPitchUp: () -> Unit, onPitchD
             textAlign = TextAlign.Center
         )
         Text(
-            text = "Key: ${generateKeyText(currentKey)}",
+            text = "Key: ${currentKey.toKeyText()}",
             textAlign = TextAlign.Center
         )
         Text(
@@ -49,20 +49,11 @@ fun PitchControllerComponent(currentKey: Double, onPitchUp: () -> Unit, onPitchD
     }
 }
 
-private fun generateKeyText(key: Double): String {
-    // 絶対値に♯と♭をつけたテキストに変換する
-    // 原曲キーの場合は±をつける
-    val prefix = if (key == 0.0) "±" else if (key > 0) "♯" else "♭"
-
-    val absoluteKey = key.absoluteValue.toInt()
-    return "$prefix$absoluteKey"
-}
-
 @Preview(showBackground = true)
 @Composable
 fun PreviewPitchControllerComponent_標準のKey() {
     PitchControllerComponent(
-        currentKey = 0.0,
+        currentKey = PitchKey(0.0),
         onPitchUp = {},
         onPitchDown = {}
     )
@@ -72,7 +63,7 @@ fun PreviewPitchControllerComponent_標準のKey() {
 @Composable
 fun PreviewPitchControllerComponent_キー3つ上げ() {
     PitchControllerComponent(
-        currentKey = 3.0,
+        currentKey = PitchKey(3.0),
         onPitchUp = {},
         onPitchDown = {}
     )
@@ -82,7 +73,7 @@ fun PreviewPitchControllerComponent_キー3つ上げ() {
 @Composable
 fun PreviewPitchControllerComponent_キー3つ下げ() {
     PitchControllerComponent(
-        currentKey = -3.0,
+        currentKey = PitchKey(-3.0),
         onPitchUp = {},
         onPitchDown = {}
     )

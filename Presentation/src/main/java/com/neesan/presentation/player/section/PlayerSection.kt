@@ -26,6 +26,7 @@ import androidx.media3.common.util.UnstableApi
 import androidx.media3.datasource.DefaultHttpDataSource
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.hls.HlsMediaSource
+import com.neesan.core.valueClass.PitchKey
 import com.neesan.presentation.isPreview
 import com.neesan.presentation.player.component.PitchControllerComponent
 import com.neesan.presentation.player.component.PlayPauseButtonComponent
@@ -40,7 +41,7 @@ fun PlayerSection(
 ) {
     val context = LocalContext.current
     val isPreview = isPreview()
-    var currentKey by remember { mutableStateOf(0.0) }
+    var currentKey by remember { mutableStateOf(PitchKey(0.0)) }
 
     val player = remember {
         if (isPreview) {
@@ -103,15 +104,16 @@ fun PlayerSection(
     }
 }
 
-private fun updatePitch(player: ExoPlayer?, key: Double) {
+private fun updatePitch(player: ExoPlayer?, key: PitchKey) {
     player?.playbackParameters = PlaybackParameters(
         1.0f,
         generatePitchFrequency(key)
     )
 }
 
-private fun generatePitchFrequency(key: Double): Float {
-    return 2.0.pow(key / 12).toFloat()
+private fun generatePitchFrequency(key: PitchKey): Float {
+    val tmpKey = key / 12
+    return 2.0.pow(tmpKey.value).toFloat()
 }
 
 @Preview(showBackground = true)

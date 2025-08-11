@@ -2,6 +2,7 @@ package com.neesan.data.favorite
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.neesan.core.valueClass.PitchKey
 
 @Entity(tableName = "favorite_videos")
 data class FavoriteVideoEntity(
@@ -10,5 +11,5 @@ data class FavoriteVideoEntity(
     val title: String,
     val thumbnailUrl: String,
     val createdAt: Long = System.currentTimeMillis(),
-    val keyValue: Double = 0.0
+    val keyValue: PitchKey = PitchKey(0.0)
 )   

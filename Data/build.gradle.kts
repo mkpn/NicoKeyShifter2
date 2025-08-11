@@ -32,6 +32,10 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
+    ksp {
+        // Room Entityのvalue classサポートのために導入
+        arg("room.generateKotlin", "true")
+    }
 }
 
 dependencies {
