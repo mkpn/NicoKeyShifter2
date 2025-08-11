@@ -76,11 +76,6 @@ fun FavoriteVideoItemComponent(
                 Spacer(modifier = Modifier.height(4.dp))
 
                 Text(
-                    text = "登録日: ${formatDate(favoriteVideo.createdAt)}",
-                    style = MaterialTheme.typography.bodyMedium
-                )
-
-                Text(
                     text = "ID: ${favoriteVideo.videoId}",
                     style = MaterialTheme.typography.bodySmall
                 )
