@@ -65,6 +65,9 @@ fun PlayerSection(
             // ExoPlayerにHLS MediaSourceを設定
             player?.setMediaSource(hlsMediaSource)
             player?.prepare()
+            // メディア準備完了時点の currentKey を必ず反映する
+            // （LaunchedEffect(currentKey) との実行順が前後しても確実に適用するための保険）
+            updatePitch(player, currentKey)
         }
     }
 

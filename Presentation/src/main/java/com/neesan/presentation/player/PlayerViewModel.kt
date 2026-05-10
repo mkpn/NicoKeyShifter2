@@ -34,7 +34,7 @@ class PlayerViewModel @Inject constructor(
 
     /**
      * 遷移パラメータで画面を初期化する。
-     * すでにお気に入り登録済みの場合は保存済みのキー値を復元する。
+     * すでにお気に入り登録済みの場合は保存済みのキー値と登録日を復元する。
      */
     fun initialize(destination: PlayerDestination) {
         if (initialized) return
@@ -51,16 +51,14 @@ class PlayerViewModel @Inject constructor(
 
         viewModelScope.launch {
             val isFavorite = checkIsFavoriteUseCase.invoke(destination.videoId).first()
-            val savedKey = if (isFavorite) {
-                getFavoriteVideoByIdUseCase.invoke(destination.videoId).first()?.keyValue
-                    ?: PitchKey(0.0)
-            } else {
-                PitchKey(0.0)
-            }
+            val savedFavorite = if (isFavorite) {
+                getFavoriteVideoByIdUseCase.invoke(destination.videoId).first()
+            } else null
             _uiState.update {
                 it.copy(
                     isFavorite = isFavorite,
-                    currentKey = savedKey,
+                    currentKey = savedFavorite?.keyValue ?: PitchKey(0.0),
+                    createdAt = savedFavorite?.createdAt ?: 0L,
                 )
             }
         }
@@ -68,10 +66,12 @@ class PlayerViewModel @Inject constructor(
 
     fun onPitchUp() {
         _uiState.update { it.copy(currentKey = it.currentKey + 1.0) }
+        persistKeyIfFavorited()
     }
 
     fun onPitchDown() {
         _uiState.update { it.copy(currentKey = it.currentKey - 1.0) }
+        persistKeyIfFavorited()
     }
 
     /**
@@ -85,19 +85,39 @@ class PlayerViewModel @Inject constructor(
         viewModelScope.launch {
             if (current.isFavorite) {
                 removeFavoriteVideoByIdUseCase.invoke(current.videoId)
-                _uiState.update { it.copy(isFavorite = false) }
+                _uiState.update { it.copy(isFavorite = false, createdAt = 0L) }
             } else {
+                val createdAt = System.currentTimeMillis()
                 addFavoriteVideoUseCase.invoke(
                     FavoriteVideoDomainData(
                         videoId = current.videoId,
                         title = current.title,
                         thumbnailUrl = current.thumbnailUrl,
-                        createdAt = System.currentTimeMillis(),
+                        createdAt = createdAt,
                         keyValue = current.currentKey,
                     )
                 )
-                _uiState.update { it.copy(isFavorite = true) }
+                _uiState.update { it.copy(isFavorite = true, createdAt = createdAt) }
             }
+        }
+    }
+
+    /**
+     * お気に入り登録済みの場合のみ、最新のキー値で永続化を上書きする。
+     */
+    private fun persistKeyIfFavorited() {
+        val state = _uiState.value
+        if (!state.isFavorite || state.videoId.isBlank()) return
+        viewModelScope.launch {
+            addFavoriteVideoUseCase.invoke(
+                FavoriteVideoDomainData(
+                    videoId = state.videoId,
+                    title = state.title,
+                    thumbnailUrl = state.thumbnailUrl,
+                    createdAt = state.createdAt.takeIf { it > 0L } ?: System.currentTimeMillis(),
+                    keyValue = state.currentKey,
+                )
+            )
         }
     }
 }
