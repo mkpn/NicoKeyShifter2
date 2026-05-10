@@ -3,7 +3,7 @@ package com.neesan.presentation.search
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.neesan.core.exception.SearchException
-import com.neesan.domain.favorite.AddFavoriteVideoUseCase
+import com.neesan.domain.favorite.AddOrUpdateFavoriteVideoUseCase
 import com.neesan.domain.favorite.FavoriteVideoDomainData
 import com.neesan.domain.favorite.RemoveFavoriteVideoByIdUseCase
 import com.neesan.domain.notification.CheckNotificationPermissionRequestedUseCase
@@ -30,7 +30,7 @@ class SearchVideoViewModel @Inject constructor(
     private val searchVideoUseCase: SearchVideoUseCase,
     private val checkNotificationPermissionRequestedUseCase: CheckNotificationPermissionRequestedUseCase,
     private val updateNotificationPermissionRequestedUseCase: UpdateNotificationPermissionRequestedUseCase,
-    private val addFavoriteVideoUseCase: AddFavoriteVideoUseCase,
+    private val addOrUpdateFavoriteVideoUseCase: AddOrUpdateFavoriteVideoUseCase,
     private val removeFavoriteVideoByIdUseCase: RemoveFavoriteVideoByIdUseCase
 ) : ViewModel() {
 
@@ -159,7 +159,7 @@ class SearchVideoViewModel @Inject constructor(
                     thumbnailUrl = video.thumbnailUrl,
                     createdAt = System.currentTimeMillis(),
                 )
-                addFavoriteVideoUseCase.invoke(favoriteVideo)
+                addOrUpdateFavoriteVideoUseCase.invoke(favoriteVideo)
                 // UI状態を更新
                 _uiState.update { currentState ->
                     currentState.copy(

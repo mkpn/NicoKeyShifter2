@@ -32,7 +32,7 @@ class GetAllFavoriteVideosUseCaseTest {
     lateinit var getAllFavoriteVideosUseCase: GetAllFavoriteVideosUseCase
 
     @Inject
-    lateinit var addFavoriteVideoUseCase: AddFavoriteVideoUseCase
+    lateinit var addOrUpdateFavoriteVideoUseCase: AddOrUpdateFavoriteVideoUseCase
 
     @Before
     fun setup() {
@@ -57,8 +57,8 @@ class GetAllFavoriteVideosUseCaseTest {
             )
 
             // お気に入りに追加
-            addFavoriteVideoUseCase.invoke(favoriteVideo1)
-            addFavoriteVideoUseCase.invoke(favoriteVideo2)
+            addOrUpdateFavoriteVideoUseCase.invoke(favoriteVideo1)
+            addOrUpdateFavoriteVideoUseCase.invoke(favoriteVideo2)
 
             // テスト実行
             val result = getAllFavoriteVideosUseCase.invoke().first()
