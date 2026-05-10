@@ -10,7 +10,10 @@
       "WebFetch(domain:github.com)",
       "WebFetch(domain:github.com)",
       "WebFetch(domain:raw.githubusercontent.com)",
-      "WebFetch(domain:developer.android.com)"
+      "WebFetch(domain:developer.android.com)",
+      "Bash(git checkout *)",
+      "Bash(adb devices *)",
+      "Bash(adb shell *)"
     ],
     "deny": []
   }

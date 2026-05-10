@@ -11,10 +11,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -37,11 +34,13 @@ import kotlin.math.pow
 @Composable
 fun PlayerSection(
     streamingUrl: String?,
+    currentKey: PitchKey,
+    onPitchUp: () -> Unit,
+    onPitchDown: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
     val isPreview = isPreview()
-    var currentKey by remember { mutableStateOf(PitchKey(0.0)) }
 
     val player = remember {
         if (isPreview) {
@@ -66,6 +65,9 @@ fun PlayerSection(
             // ExoPlayerにHLS MediaSourceを設定
             player?.setMediaSource(hlsMediaSource)
             player?.prepare()
+            // メディア準備完了時点の currentKey を必ず反映する
+            // （LaunchedEffect(currentKey) との実行順が前後しても確実に適用するための保険）
+            updatePitch(player, currentKey)
         }
     }
 
@@ -98,8 +100,8 @@ fun PlayerSection(
         }
         PitchControllerComponent(
             currentKey = currentKey,
-            onPitchUp = { currentKey += 1.0 },
-            onPitchDown = { currentKey -= 1.0 }
+            onPitchUp = onPitchUp,
+            onPitchDown = onPitchDown
         )
     }
 }
@@ -121,6 +123,9 @@ private fun generatePitchFrequency(key: PitchKey): Float {
 private fun PreviewPlayerSection() {
     PlayerSection(
         streamingUrl = "https://example.com/stream.m3u8",
+        currentKey = PitchKey(0.0),
+        onPitchUp = {},
+        onPitchDown = {},
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp)
