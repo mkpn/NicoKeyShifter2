@@ -8,22 +8,34 @@ import android.webkit.WebResourceResponse
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.media3.common.util.UnstableApi
+import com.neesan.core.valueClass.PitchKey
 import com.neesan.presentation.isPreview
 import com.neesan.presentation.player.section.PlayerSection
 import kotlinx.serialization.Serializable
@@ -82,16 +94,37 @@ private class AudioResourceMonitoringWebViewClient(
  * 動画再生画面。音声リソースの検出とURLの表示機能付き
  */
 @Composable
-fun VideoPlayerScreen(destination: PlayerDestination) {
+fun VideoPlayerScreen(
+    destination: PlayerDestination,
+    viewModel: PlayerViewModel = hiltViewModel(),
+) {
+    LaunchedEffect(destination.videoId) {
+        viewModel.initialize(destination)
+    }
+    val uiState by viewModel.uiState.collectAsState()
+
     VideoPlayerContent(
-        videoId = destination.videoId,
-        title = destination.title
+        videoId = uiState.videoId.ifBlank { destination.videoId },
+        title = uiState.title.ifBlank { destination.title },
+        currentKey = uiState.currentKey,
+        isFavorite = uiState.isFavorite,
+        onPitchUp = viewModel::onPitchUp,
+        onPitchDown = viewModel::onPitchDown,
+        onToggleFavorite = viewModel::toggleFavorite,
     )
 }
 
 @androidx.annotation.OptIn(UnstableApi::class)
 @Composable
-private fun VideoPlayerContent(videoId: String, title: String) {
+private fun VideoPlayerContent(
+    videoId: String,
+    title: String,
+    currentKey: PitchKey,
+    isFavorite: Boolean,
+    onPitchUp: () -> Unit,
+    onPitchDown: () -> Unit,
+    onToggleFavorite: () -> Unit,
+) {
     // 検出された音声URLを保存するリスト
     val detectedAudioUrls = remember { mutableStateListOf<String>() }
     var streamingUrl by remember { mutableStateOf<String?>(null) }
@@ -104,10 +137,24 @@ private fun VideoPlayerContent(videoId: String, title: String) {
     }
 
     Column(modifier = Modifier.fillMaxSize()) {
-        Text(
-            text = "動画ID: $videoId\nタイトル: $title",
-            modifier = Modifier.padding(16.dp)
-        )
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Text(
+                text = "動画ID: $videoId\nタイトル: $title",
+                modifier = Modifier.weight(1f),
+            )
+            IconButton(onClick = onToggleFavorite) {
+                Icon(
+                    imageVector = if (isFavorite) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
+                    contentDescription = if (isFavorite) "お気に入りから削除" else "お気に入りに追加",
+                    tint = if (isFavorite) Color.Red else MaterialTheme.colorScheme.onSurface,
+                )
+            }
+        }
 
         // WebViewで音声URLを検出
         if (!isPreview()) {
@@ -145,6 +192,9 @@ private fun VideoPlayerContent(videoId: String, title: String) {
             // ExoPlayerを使用したストリーミング再生
             PlayerSection(
                 streamingUrl = streamingUrl,
+                currentKey = currentKey,
+                onPitchUp = onPitchUp,
+                onPitchDown = onPitchDown,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp)
@@ -165,5 +215,13 @@ private fun VideoPlayerContent(videoId: String, title: String) {
 @Preview(showBackground = true)
 @Composable
 private fun PreviewVideoPlayerContent() {
-    VideoPlayerContent(videoId = "sm12345678", title = "サンプル動画")
+    VideoPlayerContent(
+        videoId = "sm12345678",
+        title = "サンプル動画",
+        currentKey = PitchKey(0.0),
+        isFavorite = false,
+        onPitchUp = {},
+        onPitchDown = {},
+        onToggleFavorite = {},
+    )
 }
