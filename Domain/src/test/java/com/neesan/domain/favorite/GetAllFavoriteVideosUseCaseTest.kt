@@ -32,7 +32,7 @@ class GetAllFavoriteVideosUseCaseTest {
     lateinit var getAllFavoriteVideosUseCase: GetAllFavoriteVideosUseCase
 
     @Inject
-    lateinit var addFavoriteVideoUseCase: AddFavoriteVideoUseCase
+    lateinit var addOrUpdateFavoriteVideoUseCase: AddOrUpdateFavoriteVideoUseCase
 
     @Before
     fun setup() {
@@ -57,22 +57,22 @@ class GetAllFavoriteVideosUseCaseTest {
             )
 
             // お気に入りに追加
-            addFavoriteVideoUseCase.invoke(favoriteVideo1)
-            addFavoriteVideoUseCase.invoke(favoriteVideo2)
+            addOrUpdateFavoriteVideoUseCase.invoke(favoriteVideo1)
+            addOrUpdateFavoriteVideoUseCase.invoke(favoriteVideo2)
 
             // テスト実行
             val result = getAllFavoriteVideosUseCase.invoke().first()
 
-            // 検証
+            // 検証: createdAt DESC（新しい順）で返ること
             assertEquals(2, result.size)
-            assertEquals("sm1", result[0].videoId)
-            assertEquals("お気に入り動画1", result[0].title)
-            assertEquals("url1", result[0].thumbnailUrl)
-            assertEquals(1000L, result[0].createdAt)
-            assertEquals("sm2", result[1].videoId)
-            assertEquals("お気に入り動画2", result[1].title)
-            assertEquals("url2", result[1].thumbnailUrl)
-            assertEquals(2000L, result[1].createdAt)
+            assertEquals("sm2", result[0].videoId)
+            assertEquals("お気に入り動画2", result[0].title)
+            assertEquals("url2", result[0].thumbnailUrl)
+            assertEquals(2000L, result[0].createdAt)
+            assertEquals("sm1", result[1].videoId)
+            assertEquals("お気に入り動画1", result[1].title)
+            assertEquals("url1", result[1].thumbnailUrl)
+            assertEquals(1000L, result[1].createdAt)
         }
     }
 

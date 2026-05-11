@@ -2,7 +2,7 @@ package com.neesan.presentation.favorite
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.neesan.domain.favorite.AddFavoriteVideoUseCase
+import com.neesan.domain.favorite.AddOrUpdateFavoriteVideoUseCase
 import com.neesan.domain.favorite.CheckIsFavoriteUseCase
 import com.neesan.domain.favorite.FavoriteVideoDomainData
 import com.neesan.domain.favorite.GetAllFavoriteVideosUseCase
@@ -27,7 +27,7 @@ import javax.inject.Inject
 class FavoriteVideoViewModel @Inject constructor(
     private val getAllFavoriteVideosUseCase: GetAllFavoriteVideosUseCase,
     private val getFavoriteVideoByIdUseCase: GetFavoriteVideoByIdUseCase,
-    private val addFavoriteVideoUseCase: AddFavoriteVideoUseCase,
+    private val addOrUpdateFavoriteVideoUseCase: AddOrUpdateFavoriteVideoUseCase,
     private val removeFavoriteVideoUseCase: RemoveFavoriteVideoUseCase,
     private val removeFavoriteVideoByIdUseCase: RemoveFavoriteVideoByIdUseCase,
     private val checkIsFavoriteUseCase: CheckIsFavoriteUseCase
@@ -88,7 +88,7 @@ class FavoriteVideoViewModel @Inject constructor(
     fun addFavoriteVideo(favoriteVideo: FavoriteVideoDomainData) {
         viewModelScope.launch {
             try {
-                addFavoriteVideoUseCase.invoke(favoriteVideo)
+                addOrUpdateFavoriteVideoUseCase.invoke(favoriteVideo)
                 // お気に入り一覧を再読み込み
                 loadFavoriteVideos()
             } catch (throwable: Throwable) {

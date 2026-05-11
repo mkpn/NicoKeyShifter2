@@ -3,7 +3,7 @@ package com.neesan.presentation.player
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.neesan.core.valueClass.PitchKey
-import com.neesan.domain.favorite.AddFavoriteVideoUseCase
+import com.neesan.domain.favorite.AddOrUpdateFavoriteVideoUseCase
 import com.neesan.domain.favorite.CheckIsFavoriteUseCase
 import com.neesan.domain.favorite.FavoriteVideoDomainData
 import com.neesan.domain.favorite.GetFavoriteVideoByIdUseCase
@@ -21,7 +21,7 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class PlayerViewModel @Inject constructor(
-    private val addFavoriteVideoUseCase: AddFavoriteVideoUseCase,
+    private val addOrUpdateFavoriteVideoUseCase: AddOrUpdateFavoriteVideoUseCase,
     private val removeFavoriteVideoByIdUseCase: RemoveFavoriteVideoByIdUseCase,
     private val checkIsFavoriteUseCase: CheckIsFavoriteUseCase,
     private val getFavoriteVideoByIdUseCase: GetFavoriteVideoByIdUseCase,
@@ -88,7 +88,7 @@ class PlayerViewModel @Inject constructor(
                 _uiState.update { it.copy(isFavorite = false, createdAt = 0L) }
             } else {
                 val createdAt = System.currentTimeMillis()
-                addFavoriteVideoUseCase.invoke(
+                addOrUpdateFavoriteVideoUseCase.invoke(
                     FavoriteVideoDomainData(
                         videoId = current.videoId,
                         title = current.title,
@@ -104,17 +104,18 @@ class PlayerViewModel @Inject constructor(
 
     /**
      * お気に入り登録済みの場合のみ、最新のキー値で永続化を上書きする。
+     * createdAt は UseCase 側で既存値が保持される。
      */
     private fun persistKeyIfFavorited() {
         val state = _uiState.value
         if (!state.isFavorite || state.videoId.isBlank()) return
         viewModelScope.launch {
-            addFavoriteVideoUseCase.invoke(
+            addOrUpdateFavoriteVideoUseCase.invoke(
                 FavoriteVideoDomainData(
                     videoId = state.videoId,
                     title = state.title,
                     thumbnailUrl = state.thumbnailUrl,
-                    createdAt = state.createdAt.takeIf { it > 0L } ?: System.currentTimeMillis(),
+                    createdAt = state.createdAt,
                     keyValue = state.currentKey,
                 )
             )

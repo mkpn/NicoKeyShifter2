@@ -32,7 +32,7 @@ class RemoveFavoriteVideoByIdUseCaseTest {
     lateinit var removeFavoriteVideoByIdUseCase: RemoveFavoriteVideoByIdUseCase
 
     @Inject
-    lateinit var addFavoriteVideoUseCase: AddFavoriteVideoUseCase
+    lateinit var addOrUpdateFavoriteVideoUseCase: AddOrUpdateFavoriteVideoUseCase
 
     @Before
     fun setup() {
@@ -51,7 +51,7 @@ class RemoveFavoriteVideoByIdUseCaseTest {
             )
 
             // お気に入りに追加
-            addFavoriteVideoUseCase.invoke(favoriteVideoDomainData)
+            addOrUpdateFavoriteVideoUseCase.invoke(favoriteVideoDomainData)
 
             // テスト実行
             removeFavoriteVideoByIdUseCase.invoke("sm12345")

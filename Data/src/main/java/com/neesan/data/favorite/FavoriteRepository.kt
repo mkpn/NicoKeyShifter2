@@ -22,7 +22,7 @@ class FavoriteRepository @Inject constructor(
 
     suspend fun addFavoriteVideo(favoriteVideo: FavoriteVideoEntity) =
         withContext(coroutineDispatcher) {
-            favoriteVideoDao.insertFavoriteVideo(favoriteVideo)
+            favoriteVideoDao.upsertFavoriteVideo(favoriteVideo)
         }
 
     suspend fun removeFavoriteVideo(favoriteVideo: FavoriteVideoEntity) =

@@ -33,7 +33,7 @@ class CheckIsFavoriteUseCaseTest {
     lateinit var checkIsFavoriteUseCase: CheckIsFavoriteUseCase
 
     @Inject
-    lateinit var addFavoriteVideoUseCase: AddFavoriteVideoUseCase
+    lateinit var addOrUpdateFavoriteVideoUseCase: AddOrUpdateFavoriteVideoUseCase
 
     @Before
     fun setup() {
@@ -52,7 +52,7 @@ class CheckIsFavoriteUseCaseTest {
             )
 
             // お気に入りに追加
-            addFavoriteVideoUseCase.invoke(favoriteVideoDomainData)
+            addOrUpdateFavoriteVideoUseCase.invoke(favoriteVideoDomainData)
 
             // テスト実行
             val result = checkIsFavoriteUseCase.invoke("sm12345").first()

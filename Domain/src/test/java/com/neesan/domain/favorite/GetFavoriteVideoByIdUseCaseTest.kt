@@ -33,7 +33,7 @@ class GetFavoriteVideoByIdUseCaseTest {
     lateinit var getFavoriteVideoByIdUseCase: GetFavoriteVideoByIdUseCase
 
     @Inject
-    lateinit var addFavoriteVideoUseCase: AddFavoriteVideoUseCase
+    lateinit var addOrUpdateFavoriteVideoUseCase: AddOrUpdateFavoriteVideoUseCase
 
     @Before
     fun setup() {
@@ -52,7 +52,7 @@ class GetFavoriteVideoByIdUseCaseTest {
             )
 
             // お気に入りに追加
-            addFavoriteVideoUseCase.invoke(favoriteVideoDomainData)
+            addOrUpdateFavoriteVideoUseCase.invoke(favoriteVideoDomainData)
 
             // テスト実行
             val result = getFavoriteVideoByIdUseCase.invoke("sm12345").first()
