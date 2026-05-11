@@ -3,21 +3,20 @@ package com.neesan.data.favorite
 
 import androidx.room.Dao
 import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Upsert
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface FavoriteVideoDao {
-    @Query("SELECT * FROM favorite_videos")
+    @Query("SELECT * FROM favorite_videos ORDER BY createdAt DESC")
     fun getAllFavoriteVideos(): Flow<List<FavoriteVideoEntity>>
 
     @Query("SELECT * FROM favorite_videos WHERE videoId = :videoId")
     suspend fun getFavoriteVideoById(videoId: String): FavoriteVideoEntity?
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertFavoriteVideo(favoriteVideo: FavoriteVideoEntity)
+    @Upsert
+    suspend fun upsertFavoriteVideo(favoriteVideo: FavoriteVideoEntity)
 
     @Delete
     suspend fun deleteFavoriteVideo(favoriteVideo: FavoriteVideoEntity)
