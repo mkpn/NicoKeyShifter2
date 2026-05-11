@@ -90,6 +90,10 @@ private fun SearchContent(
 ) {
     var searchQuery by remember { mutableStateOf("") }
     val keyboardController = LocalSoftwareKeyboardController.current
+    val executeSearch = {
+        keyboardController?.hide()
+        onSearch(searchQuery)
+    }
 
     val requestPermissionLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) {
@@ -125,10 +129,7 @@ private fun SearchContent(
                 modifier = Modifier.fillMaxWidth(),
                 label = { Text("検索キーワード") },
                 leadingIcon = {
-                    IconButton(onClick = {
-                        keyboardController?.hide()
-                        onSearch(searchQuery)
-                    }) {
+                    IconButton(onClick = { executeSearch() }) {
                         Icon(Icons.Default.Search, contentDescription = "検索")
                     }
                 },
@@ -144,12 +145,7 @@ private fun SearchContent(
                 },
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
-                keyboardActions = KeyboardActions(
-                    onSearch = {
-                        keyboardController?.hide()
-                        onSearch(searchQuery)
-                    }
-                )
+                keyboardActions = KeyboardActions(onSearch = { executeSearch() })
             )
 
             Spacer(modifier = Modifier.height(16.dp))
