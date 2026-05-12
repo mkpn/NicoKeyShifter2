@@ -3,8 +3,7 @@ package com.neesan.domain.search
 import com.neesan.data.favorite.FavoriteRepository
 import com.neesan.data.search.SearchRepository
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.combine
 import javax.inject.Inject
 
 /**
@@ -16,6 +15,9 @@ class SearchVideoUseCase @Inject constructor(
 ) {
     /**
      * キーワードで動画を検索する
+     *
+     * お気に入りDBのFlowと結合しているため、お気に入り一覧側で追加/削除されると
+     * 検索結果のisFavoriteも自動的に最新化される。
      *
      * @param query 検索キーワード
      * @param targets 検索対象（デフォルトはタイトル）
@@ -30,17 +32,13 @@ class SearchVideoUseCase @Inject constructor(
         sort: String = "-viewCounter",
         limit: Int = 100
     ): Flow<List<VideoDomainModel>> {
-        return flow {
-            searchRepository.searchVideos(query, targets, sort, limit).collect {
-                // 取得した動画リストをVideoMapperを使って変換
-                val videos = it.data.map { video ->
-                    val videoDomainModel = VideoMapper.toVideoDomainModel(video)
-                    // お気に入り状態を確認
-                    val isFavorite = favoriteRepository.isFavorite(videoDomainModel.id).first()
-                    videoDomainModel.copy(isFavorite = isFavorite)
+        return searchRepository.searchVideos(query, targets, sort, limit)
+            .combine(favoriteRepository.getAllFavoriteVideos()) { response, favorites ->
+                val favoriteIds = favorites.mapTo(mutableSetOf()) { it.videoId }
+                response.data.map { video ->
+                    VideoMapper.toVideoDomainModel(video)
+                        .copy(isFavorite = favoriteIds.contains(video.contentId))
                 }
-                emit(videos)
             }
-        }
     }
 }

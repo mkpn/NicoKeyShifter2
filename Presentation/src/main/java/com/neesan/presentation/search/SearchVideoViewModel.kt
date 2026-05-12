@@ -137,22 +137,15 @@ class SearchVideoViewModel @Inject constructor(
 
     /**
      * お気に入り状態を切り替える
+     *
+     * DB更新後の反映は SearchVideoUseCase が公開するFlow経由で行われるため、
+     * ここではDB書き込みのみ行う。
      */
     fun toggleFavorite(video: VideoDomainModel) {
         viewModelScope.launch {
             if (video.isFavorite) {
-                // お気に入りから削除
                 removeFavoriteVideoByIdUseCase.invoke(video.id)
-                // UI状態を更新
-                _uiState.update { currentState ->
-                    currentState.copy(
-                        videos = currentState.videos.map { 
-                            if (it.id == video.id) it.copy(isFavorite = false) else it
-                        }
-                    )
-                }
             } else {
-                // お気に入りに追加
                 val favoriteVideo = FavoriteVideoDomainData(
                     videoId = video.id,
                     title = video.title,
@@ -160,14 +153,6 @@ class SearchVideoViewModel @Inject constructor(
                     createdAt = System.currentTimeMillis(),
                 )
                 addOrUpdateFavoriteVideoUseCase.invoke(favoriteVideo)
-                // UI状態を更新
-                _uiState.update { currentState ->
-                    currentState.copy(
-                        videos = currentState.videos.map { 
-                            if (it.id == video.id) it.copy(isFavorite = true) else it
-                        }
-                    )
-                }
             }
         }
     }
